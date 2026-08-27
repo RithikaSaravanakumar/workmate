@@ -110,8 +110,8 @@ export default function TaskModal({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="modal-body">
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, overflow: 'hidden' }}>
+          <div className="modal-body" style={{ overflowY: 'auto', flex: 1, padding: '20px 24px' }}>
             {/* Row 1: Task ID & Priority */}
             <div className="form-row">
               <div className="form-group">
@@ -212,7 +212,7 @@ export default function TaskModal({
               <label className="form-label">Description &amp; Acceptance Criteria</label>
               <textarea
                 className="form-control"
-                rows={4}
+                rows={3}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 placeholder="Detail technical requirements, expected deliverables, or instructions for the assignee..."
@@ -220,11 +220,35 @@ export default function TaskModal({
             </div>
           </div>
 
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>
+          <div
+            className="modal-footer"
+            style={{
+              padding: '16px 24px',
+              borderTop: '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '12px',
+              background: 'var(--bg-card)',
+              flexShrink: 0,
+            }}
+          >
+            <button type="button" className="btn btn-secondary" onClick={onClose} id="cancel-task-btn">
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+              id="submit-task-btn"
+              style={{
+                background: 'linear-gradient(135deg, #FFE44D 0%, #FFD21F 100%)',
+                color: '#0A0A0A',
+                fontWeight: 800,
+                padding: '10px 22px',
+                boxShadow: '0 0 16px rgba(255, 210, 31, 0.35)',
+              }}
+            >
               {loading ? 'Saving...' : mode === 'edit' ? 'Save Changes' : '+ Create Task'}
             </button>
           </div>

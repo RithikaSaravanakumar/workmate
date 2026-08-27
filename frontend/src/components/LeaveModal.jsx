@@ -122,10 +122,14 @@ export default function LeaveModal({ isOpen, isManager = false, employees = [], 
                 value={formData.leave_type}
                 onChange={(e) => setFormData({ ...formData, leave_type: e.target.value })}
               >
-                <option value="Casual">🌴 Casual Leave</option>
-                <option value="Sick">🩺 Sick / Medical Leave</option>
-                <option value="Annual">✈️ Annual Paid Leave</option>
-                <option value="Emergency">🚨 Emergency Leave</option>
+                <option value="Casual">Casual Leave</option>
+                <option value="Sick">Sick Leave</option>
+                <option value="Annual">Annual / Vacation Leave</option>
+                <option value="Emergency">Emergency Leave</option>
+                <option value="Maternity">Maternity Leave</option>
+                <option value="Paternity">Paternity Leave</option>
+                <option value="Bereavement">Bereavement Leave</option>
+                <option value="Compensatory">Compensatory Off</option>
               </select>
             </div>
 
@@ -157,24 +161,23 @@ export default function LeaveModal({ isOpen, isManager = false, employees = [], 
               </div>
             </div>
 
+            {/* Calculated Days Preview */}
             {daysCount > 0 && (
               <div
                 style={{
                   background: 'rgba(255, 210, 31, 0.08)',
-                  border: '1px solid var(--border-gold)',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '10px 16px',
-                  marginBottom: '18px',
-                  fontSize: '13px',
-                  color: 'var(--text-100)',
+                  border: '1px solid rgba(255, 210, 31, 0.25)',
+                  borderRadius: 'var(--radius-sm)',
+                  padding: '12px 16px',
+                  marginBottom: '16px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '8px',
+                  gap: '10px',
                 }}
               >
                 <Clock size={16} color="var(--primary-yellow)" />
-                <span>
-                  Total duration: <strong style={{ color: 'var(--primary-yellow)' }}>{daysCount} {daysCount === 1 ? 'day' : 'days'}</strong> off requested.
+                <span style={{ fontSize: '13px', color: 'var(--text-100)' }}>
+                  Total Duration: <strong style={{ color: 'var(--primary-yellow)' }}>{daysCount} {daysCount === 1 ? 'business day' : 'business days'}</strong>
                 </span>
               </div>
             )}
@@ -183,7 +186,7 @@ export default function LeaveModal({ isOpen, isManager = false, employees = [], 
               <label className="form-label">Reason for Request *</label>
               <textarea
                 className="form-control"
-                rows={4}
+                rows={3}
                 value={formData.reason}
                 onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
                 placeholder="Explain the reason for taking time off, backup coverage plan, etc..."
@@ -192,7 +195,19 @@ export default function LeaveModal({ isOpen, isManager = false, employees = [], 
             </div>
           </div>
 
-          <div className="modal-footer">
+          <div
+            className="modal-footer"
+            style={{
+              padding: '16px 24px',
+              borderTop: '1px solid var(--border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              gap: '12px',
+              background: 'var(--bg-card)',
+              flexShrink: 0,
+            }}
+          >
             <button type="button" className="btn btn-secondary" onClick={onClose}>
               Cancel
             </button>

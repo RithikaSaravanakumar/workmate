@@ -1025,7 +1025,7 @@ textarea.form-control {
 .modal {
   width: 100%;
   max-width: 580px;
-  max-height: 90vh;
+  max-height: 88vh;
   background: var(--bg-card);
   border: 1px solid var(--border-hover);
   border-radius: var(--radius-xl);
@@ -1037,7 +1037,15 @@ textarea.form-control {
 }
 
 .modal-lg {
-  max-width: 760px;
+  max-width: 740px;
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 @keyframes fadeIn {
@@ -1057,11 +1065,12 @@ textarea.form-control {
 }
 
 .modal-header {
-  padding: 22px 28px;
+  padding: 18px 24px;
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .modal-title {
@@ -1091,19 +1100,21 @@ textarea.form-control {
 }
 
 .modal-body {
-  padding: 24px 28px;
+  padding: 20px 24px;
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
 }
 
 .modal-footer {
-  padding: 18px 28px;
+  padding: 16px 24px;
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 12px;
-  background: var(--bg-pure);
+  background: var(--bg-card);
+  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------------------------
