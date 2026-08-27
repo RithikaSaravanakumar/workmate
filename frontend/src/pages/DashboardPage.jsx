@@ -1033,27 +1033,29 @@ export default function DashboardPage({
                     </td>
                     <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'inline-flex', gap: '6px' }}>
-                        {t.status !== 'Completed' ? (
-                          <button
-                            className="btn btn-secondary btn-sm"
-                            title="Advance Status"
-                            onClick={() =>
-                              handleQuickStatusUpdate(
-                                t.id,
-                                t.status === 'Pending' ? 'In Progress' : 'Completed'
-                              )
-                            }
-                          >
-                            <Play size={13} color="var(--primary-yellow)" />
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-secondary btn-sm"
-                            title="Reopen Task"
-                            onClick={() => handleQuickStatusUpdate(t.id, 'In Progress')}
-                          >
-                            <RotateCcw size={13} color="var(--amber)" />
-                          </button>
+                        {isEmployee && (
+                          t.status !== 'Completed' ? (
+                            <button
+                              className="btn btn-secondary btn-sm"
+                              title="Advance Status"
+                              onClick={() =>
+                                handleQuickStatusUpdate(
+                                  t.id,
+                                  t.status === 'Pending' ? 'In Progress' : 'Completed'
+                                )
+                              }
+                            >
+                              <Play size={13} color="var(--primary-yellow)" />
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-secondary btn-sm"
+                              title="Reopen Task"
+                              onClick={() => handleQuickStatusUpdate(t.id, 'In Progress')}
+                            >
+                              <RotateCcw size={13} color="var(--amber)" />
+                            </button>
+                          )
                         )}
                         <button
                           className="btn btn-secondary btn-sm"
@@ -1066,7 +1068,7 @@ export default function DashboardPage({
                           <>
                             <button
                               className="btn btn-secondary btn-sm"
-                              title="Edit Task"
+                              title="Edit Task Details"
                               onClick={() => onOpenEditTaskModal(t)}
                             >
                               <Edit2 size={13} />

@@ -190,21 +190,22 @@ export default function TaskModal({
               </div>
             </div>
 
-            {/* Row 4: Status */}
-            <div className="form-group">
-              <label className="form-label">
-                <CheckCircle2 size={13} style={{ display: 'inline', marginRight: '4px' }} /> Workflow Status *
-              </label>
-              <select
-                className="form-control"
-                value={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-              >
-                <option value="Pending">⏳ Pending (Awaiting Kickoff)</option>
-                <option value="In Progress">⚡ In Progress (Active Sprint)</option>
-                <option value="Completed">✅ Completed (Done)</option>
-              </select>
-            </div>
+            {/* Row 4: Status (Only for new task or if editing own task) */}
+            {mode !== 'edit' && (
+              <div className="form-group">
+                <label className="form-label">
+                  <CheckCircle2 size={13} style={{ display: 'inline', marginRight: '4px' }} /> Initial Status *
+                </label>
+                <select
+                  className="form-control"
+                  value={formData.status}
+                  onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                >
+                  <option value="Pending">⏳ Pending (Awaiting Kickoff)</option>
+                  <option value="In Progress">⚡ In Progress (Active Sprint)</option>
+                </select>
+              </div>
+            )}
 
             {/* Row 5: Description */}
             <div className="form-group" style={{ marginBottom: 0 }}>

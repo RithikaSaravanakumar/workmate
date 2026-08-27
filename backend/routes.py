@@ -204,27 +204,59 @@ def get_tasks():
     status = request.args.get("status", "")
     priority = request.args.get("priority", "")
     emp_filter = request.args.get("employee_id", "")
+    scope = request.args.get("scope", "")  # "my_tasks" | "team_tasks" | "all"
     role = get_current_role()
 
     if role == "manager":
-        tasks = task_manager.get_tasks_for_manager(get_current_manager_id(), search, status, priority, emp_filter)
+        mgr_id = get_current_manager_id()
+        tasks = task_manager.get_tasks_for_manager(mgr_id, search, status, priority, emp_filter, scope)
+        norm_mgr_id = "MGR-001" if mgr_id == "003" else mgr_id
+        for t in tasks:
+            t["is_my_task"] = (t.get("employee_id") == norm_mgr_id)
+            t["can_update_status"] = (t.get("employee_id") == norm_mgr_id)
         return jsonify(tasks), 200
+
     elif role == "employee":
-        tasks = task_manager.get_tasks_for_employee(get_current_employee_id(), search, status, priority)
+        emp_id = get_current_employee_id()
+        tasks = task_manager.get_tasks_for_employee(emp_id, search, status, priority)
+        for t in tasks:
+            t["is_my_task"] = True
+            t["can_update_status"] = True
         return jsonify(tasks), 200
-    else:
-        return jsonify([]), 200
+
+    elif role == "admin":
+        tasks = task_manager.get_all_tasks_for_admin(search, status, priority)
+        for t in tasks:
+            t["is_my_task"] = False
+            t["can_update_status"] = False
+        return jsonify(tasks), 200
+
+    return jsonify([]), 200
 
 
 @bp.route("/api/tasks", methods=["POST"])
-@manager_required
+@login_required
 def create_task():
-    manager_id = get_current_manager_id()
-    employees = get_employees_for_manager(manager_id)
+    role = get_current_role()
     data = request.get_json(silent=True) or {}
+
     try:
-        new_task = task_manager.add_task(manager_id, data, employees)
-        return jsonify(new_task), 201
+        if role == "manager":
+            manager_id = get_current_manager_id()
+            manager_name = session.get("full_name", "Manager")
+            employees = get_employees_for_manager(manager_id)
+            new_task = task_manager.add_task(manager_id, data, employees, manager_name)
+            return jsonify(new_task), 201
+
+        elif role == "admin":
+            admin_id = session.get("admin_id", "CEO-001")
+            managers = load_managers()
+            new_task = task_manager.add_task_by_admin(admin_id, data, managers)
+            return jsonify(new_task), 201
+
+        else:
+            return jsonify({"error": "Employees are not authorized to create tasks."}), 403
+
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -232,12 +264,7 @@ def create_task():
 @bp.route("/api/tasks/<task_id>", methods=["GET"])
 @login_required
 def get_task(task_id):
-    role = get_current_role()
-    if role == "manager":
-        task = task_manager.get_task_by_id(get_current_manager_id(), task_id)
-    else:
-        task = task_manager.get_task_for_employee(get_current_employee_id(), task_id)
-
+    task = task_manager.get_task_by_id(task_id)
     if not task:
         return jsonify({"error": f"Task '{task_id}' not found."}), 404
     return jsonify(task), 200
@@ -264,21 +291,35 @@ def update_task_status(task_id):
     note = data.get("note", "")
     role = get_current_role()
 
+    if role == "employee":
+        actor_id = get_current_employee_id()
+        actor_name = session.get("employee_name") or session.get("name") or actor_id
+    elif role == "manager":
+        actor_id = get_current_manager_id()
+        if actor_id == "003":
+            actor_id = "MGR-001"
+        actor_name = session.get("full_name") or session.get("name") or "Manager"
+    elif role == "admin":
+        actor_id = session.get("admin_id", "CEO-001")
+        actor_name = session.get("full_name", "CEO / Administrator")
+    else:
+        return jsonify({"error": "Unauthorized"}), 401
+
     try:
-        if role == "employee":
-            emp_id = get_current_employee_id()
-            emp_name = session.get("employee_name", emp_id)
-            updated = task_manager.update_task_status_by_employee(emp_id, emp_name, task_id, new_status, note)
-            return jsonify({"message": f"Task moved to {new_status}.", "task": updated}), 200
-        elif role == "manager":
-            manager_id = get_current_manager_id()
-            employees = get_employees_for_manager(manager_id)
-            updated = task_manager.update_task(manager_id, task_id, {"status": new_status, "note": note}, employees)
-            return jsonify({"message": f"Task moved to {new_status}.", "task": updated}), 200
-        else:
-            return jsonify({"error": "Unauthorized"}), 403
-    except ValueError as e:
-        return jsonify({"error": str(e)}), 400
+        updated = task_manager.update_task_status_authorized(
+            task_id=task_id,
+            actor_id=actor_id,
+            actor_name=actor_name,
+            actor_role=role,
+            new_status=new_status,
+            note=note
+        )
+        return jsonify({"message": f"Task status updated to {new_status}.", "task": updated}), 200
+
+    except PermissionError as pe:
+        return jsonify({"error": str(pe)}), 403
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
 
 
 @bp.route("/api/tasks/<task_id>/activity", methods=["GET"])

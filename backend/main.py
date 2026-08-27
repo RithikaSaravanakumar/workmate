@@ -11,6 +11,7 @@ from backend.routes import bp
 from backend.manager_store import seed_if_empty as seed_manager
 from backend.employee_manager import seed_if_empty as seed_employees
 from backend.attendance_manager import attendance_manager
+from backend.task_manager import task_manager
 
 
 def create_app() -> Flask:
@@ -25,10 +26,11 @@ def create_app() -> Flask:
     # Register API blueprint
     app.register_blueprint(bp)
 
-    # Seed demo manager, employees, and attendance if needed
+    # Seed demo manager, employees, attendance, and manager tasks if needed
     seed_manager()
     seed_employees("MGR-001")
     attendance_manager.seed_if_empty("MGR-001")
+    task_manager.seed_manager_tasks_if_empty("MGR-001")
 
     # Serve React frontend
     @app.route("/", defaults={"path": ""})
