@@ -1,0 +1,201 @@
+/* ================================================================
+   WorkMate 2.0 — Design System Tokens
+   Dark Theme: Black/Charcoal base + Multi-color accent system
+   ================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ---- Base Background Scale ---- */
+  --bg-900: #050505;   /* pure black */
+  --bg-800: #0A0A0A;   /* deep black */
+  --bg-700: #111111;   /* charcoal */
+  --bg-600: #181818;   /* dark graphite */
+  --bg-500: #222222;   /* graphite */
+  --bg-400: #2A2A2A;   /* soft charcoal */
+  --bg-300: #333333;   /* medium charcoal */
+  --bg-200: #3D3D3D;   /* lighter charcoal */
+
+  /* ---- Yellow/Gold Primary ---- */
+  --yellow-500: #FFD21F;   /* primary yellow */
+  --yellow-400: #FFE44D;   /* bright yellow */
+  --yellow-600: #F5C542;   /* golden yellow */
+  --amber-500:  #F59E0B;   /* amber */
+  --amber-400:  #FBBF24;   /* lighter amber */
+  --gold-600:   #C99700;   /* deep gold */
+  --gold-500:   #E5B93F;   /* soft gold */
+  --cream-100:  #FFF7D6;   /* warm cream */
+
+  /* ---- Multi-Color Accent Family ---- */
+  /* Violet/Lavender */
+  --violet-600: #7C3AED;
+  --violet-500: #8B5CF6;
+  --violet-400: #A78BFA;
+  --violet-200: rgba(139,92,246,0.15);
+
+  /* Sky/Blue */
+  --sky-500:    #60A5FA;
+  --sky-400:    #93C5FD;
+  --periwinkle: #818CF8;
+  --sky-200:    rgba(96,165,250,0.15);
+
+  /* Mint/Emerald */
+  --emerald-500: #34D399;
+  --emerald-400: #6EE7B7;
+  --mint-200:    rgba(52,211,153,0.15);
+
+  /* Coral/Rose */
+  --coral-500: #F07C6C;
+  --coral-400: #F4929A;
+  --rose-500:  #F4729A;
+  --coral-200: rgba(240,124,108,0.15);
+
+  /* Peach/Orange */
+  --peach-500: #FDBA8C;
+  --peach-200: rgba(253,186,140,0.15);
+
+  /* Aqua/Teal */
+  --aqua-500:  #5DD6D0;
+  --aqua-200:  rgba(93,214,208,0.15);
+
+  /* Sage/Green */
+  --sage-500:  #A8C69F;
+  --sage-200:  rgba(168,198,159,0.15);
+
+  /* ---- Semantic Mapping ---- */
+  --color-primary:    var(--yellow-500);
+  --color-primary-lt: var(--yellow-400);
+  --color-accent:     var(--violet-500);
+
+  /* Status colors */
+  --status-completed:    var(--emerald-500);
+  --status-completed-bg: var(--mint-200);
+  --status-progress:     var(--sky-500);
+  --status-progress-bg:  var(--sky-200);
+  --status-pending:      var(--amber-400);
+  --status-pending-bg:   rgba(251,191,36,0.15);
+
+  /* Priority colors */
+  --priority-high:   var(--coral-500);
+  --priority-high-bg: var(--coral-200);
+  --priority-med:    var(--peach-500);
+  --priority-med-bg: var(--peach-200);
+  --priority-low:    var(--sage-500);
+  --priority-low-bg: var(--sage-200);
+
+  /* Stat card accent colors */
+  --stat-total-color:  var(--violet-400);
+  --stat-total-bg:     var(--violet-200);
+  --stat-progress-color: var(--sky-500);
+  --stat-progress-bg:   var(--sky-200);
+  --stat-pending-color:  var(--amber-400);
+  --stat-pending-bg:     rgba(251,191,36,0.12);
+  --stat-done-color:     var(--emerald-500);
+  --stat-done-bg:        var(--mint-200);
+
+  /* ---- Text ---- */
+  --text-100: #F7F7F5;   /* primary text */
+  --text-200: #A7A7A0;   /* secondary text */
+  --text-300: #73736D;   /* muted text */
+  --text-400: #4A4A45;   /* very muted */
+
+  /* ---- Borders ---- */
+  --border:       rgba(255,255,255,0.07);
+  --border-md:    rgba(255,255,255,0.10);
+  --border-focus: var(--yellow-500);
+  --border-glow:  rgba(255,210,31,0.3);
+
+  /* ---- Layout ---- */
+  --sidebar-width: 260px;
+  --header-height: 64px;
+
+  /* ---- Spacing (8px grid) ---- */
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+
+  /* Legacy aliases */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-2xl: 48px;
+
+  /* ---- Border Radius ---- */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-2xl:  28px;
+  --radius-full: 9999px;
+
+  /* ---- Shadows ---- */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 40px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.3);
+  --shadow-xl: 0 24px 80px rgba(0,0,0,0.7), 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-glow: 0 0 20px rgba(255,210,31,0.2), 0 4px 16px rgba(255,210,31,0.15);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px var(--border);
+
+  /* ---- Transitions ---- */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --dur-fast:   150ms;
+  --dur-base:   250ms;
+  --dur-slow:   400ms;
+  --transition-fast: 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-base: 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Z-Indices ---- */
+  --z-base:    1;
+  --z-sidebar: 100;
+  --z-header:  90;
+  --z-dropdown: 200;
+  --z-overlay: 900;
+  --z-modal:   1000;
+  --z-toast:   2000;
+
+  /* ---- Glassmorphism ---- */
+  --glass-bg:     rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+  --glass-blur:   blur(16px);
+
+  /* ---- Color aliases for style.css backward compat ---- */
+  --color-bg:            var(--bg-800);
+  --color-charcoal:      var(--bg-700);
+  --color-graphite:      var(--bg-500);
+  --color-dark-graphite: var(--bg-600);
+  --color-soft-charcoal: var(--bg-400);
+  --color-border:        var(--border);
+  --color-primary-text:  var(--text-100);
+  --color-secondary-text: var(--text-200);
+  --color-muted-text:    var(--text-300);
+  --color-primary-yellow: var(--yellow-500);
+  --color-bright-yellow:  var(--yellow-400);
+  --color-amber:         var(--amber-500);
+  --color-soft-gold:     var(--gold-500);
+  --color-success:       var(--emerald-500);
+  --color-warning:       var(--amber-500);
+  --color-danger:        var(--coral-500);
+  --color-info:          var(--sky-500);
+  --shadow-primary:      var(--shadow-glow);
+}
+
+/* ---- Reduced Motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

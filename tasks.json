@@ -1,0 +1,739 @@
+[
+  {
+    "id": "TASK-101",
+    "manager_id": "003",
+    "title": "Design Database Schema",
+    "description": "Create the initial SQL schema for user profiles and settings tables.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "High",
+    "status": "Completed",
+    "created_at": "2025-06-01 09:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-01 09:00:00",
+        "note": "Initial task creation"
+      },
+      {
+        "timestamp": "2026-08-27 12:11:47",
+        "action": "Reopened",
+        "actor": "Sarah Jenkins",
+        "previous_status": "Completed",
+        "new_status": "In Progress",
+        "note": "Reopened task for further work"
+      },
+      {
+        "timestamp": "2026-08-27 12:11:52",
+        "action": "Status Updated",
+        "actor": "Sarah Jenkins",
+        "previous_status": "In Progress",
+        "new_status": "In Progress",
+        "note": "Moved to In Progress"
+      },
+      {
+        "timestamp": "2026-08-27 12:11:59",
+        "action": "Status Updated",
+        "actor": "Sarah Jenkins",
+        "previous_status": "In Progress",
+        "new_status": "In Progress",
+        "note": "Moved to In Progress"
+      },
+      {
+        "timestamp": "2026-08-27 12:38:05",
+        "action": "Status Updated",
+        "actor": "Sarah Jenkins",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "Moved to Completed"
+      }
+    ],
+    "updated_at": "2026-08-27 12:38:05"
+  },
+  {
+    "id": "TASK-102",
+    "manager_id": "003",
+    "title": "Setup OAuth2 Authentication",
+    "description": "Integrate Google and GitHub OAuth sign-in flow for the dashboard.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "Completed",
+    "created_at": "2025-06-03 10:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-03 10:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-103",
+    "manager_id": "003",
+    "title": "Write API Documentation",
+    "description": "Document REST API endpoints using Swagger/OpenAPI specifications.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "Medium",
+    "status": "In Progress",
+    "created_at": "2025-06-05 11:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-05 11:00:00",
+        "note": "Initial task creation"
+      },
+      {
+        "timestamp": "2026-08-27 12:38:19",
+        "action": "Status Updated",
+        "actor": "Sarah Jenkins",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Moved to In Progress"
+      }
+    ],
+    "updated_at": "2026-08-27 12:38:19"
+  },
+  {
+    "id": "TASK-104",
+    "manager_id": "003",
+    "title": "Optimize Image Compression",
+    "description": "Implement lazy loading and WebP conversion for asset uploads.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "Low",
+    "status": "Pending",
+    "created_at": "2025-06-06 09:30:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-06 09:30:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-105",
+    "manager_id": "003",
+    "title": "Setup CI/CD Pipeline",
+    "description": "Configure GitHub Actions for automated testing and deployment.",
+    "employee_id": "EMP-004",
+    "employee": "Raj Patel",
+    "priority": "High",
+    "status": "In Progress",
+    "created_at": "2025-06-07 14:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "In Progress",
+        "timestamp": "2025-06-07 14:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-106",
+    "manager_id": "003",
+    "title": "Frontend Unit Tests",
+    "description": "Write Jest unit tests for React components in the dashboard module.",
+    "employee_id": "EMP-005",
+    "employee": "Lisa Wang",
+    "priority": "Medium",
+    "status": "Pending",
+    "created_at": "2025-06-08 10:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-08 10:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-107",
+    "manager_id": "003",
+    "title": "Mobile Responsive Redesign",
+    "description": "Update all dashboard pages to be fully responsive for tablets and phones.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "Medium",
+    "status": "Completed",
+    "created_at": "2025-06-09 09:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-09 09:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-108",
+    "manager_id": "003",
+    "title": "Security Audit",
+    "description": "Review all API endpoints for authentication gaps and injection vulnerabilities.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "Pending",
+    "created_at": "2025-06-10 08:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-10 08:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-109",
+    "title": "Create ui",
+    "description": "",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "High",
+    "status": "Pending",
+    "manager_id": "003",
+    "created_at": "2026-08-26 16:33:25",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2026-08-26 16:33:25",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-101",
+    "manager_id": "MGR-001",
+    "title": "Design Database Schema",
+    "description": "Create the initial SQL schema for user profiles and settings tables.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "High",
+    "status": "Completed",
+    "created_at": "2025-06-01 09:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-01 09:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-102",
+    "manager_id": "MGR-001",
+    "title": "Setup OAuth2 Authentication",
+    "description": "Integrate Google and GitHub OAuth sign-in flow for the dashboard.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "In Progress",
+    "created_at": "2025-06-03 10:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "In Progress",
+        "timestamp": "2025-06-03 10:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-103",
+    "manager_id": "MGR-001",
+    "title": "Write API Documentation",
+    "description": "Document REST API endpoints using Swagger/OpenAPI specifications.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "Medium",
+    "status": "Pending",
+    "created_at": "2025-06-05 11:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-05 11:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-104",
+    "manager_id": "MGR-001",
+    "title": "Optimize Image Compression",
+    "description": "Implement lazy loading and WebP conversion for asset uploads.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "Low",
+    "status": "Pending",
+    "created_at": "2025-06-06 09:30:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-06 09:30:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-105",
+    "manager_id": "MGR-001",
+    "title": "Setup CI/CD Pipeline",
+    "description": "Configure GitHub Actions for automated testing and deployment.",
+    "employee_id": "EMP-004",
+    "employee": "Raj Patel",
+    "priority": "High",
+    "status": "In Progress",
+    "created_at": "2025-06-07 14:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "In Progress",
+        "timestamp": "2025-06-07 14:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-106",
+    "manager_id": "MGR-001",
+    "title": "Frontend Unit Tests",
+    "description": "Write Jest unit tests for React components in the dashboard module.",
+    "employee_id": "EMP-005",
+    "employee": "Lisa Wang",
+    "priority": "Medium",
+    "status": "Pending",
+    "created_at": "2025-06-08 10:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-08 10:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-107",
+    "manager_id": "MGR-001",
+    "title": "Mobile Responsive Redesign",
+    "description": "Update all dashboard pages to be fully responsive for tablets and phones.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "Medium",
+    "status": "Completed",
+    "created_at": "2025-06-09 09:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-09 09:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-108",
+    "manager_id": "MGR-001",
+    "title": "Security Audit",
+    "description": "Review all API endpoints for authentication gaps and injection vulnerabilities.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "Pending",
+    "created_at": "2025-06-10 08:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-10 08:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-101",
+    "manager_id": "005",
+    "title": "Design Database Schema",
+    "description": "Create the initial SQL schema for user profiles and settings tables.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "High",
+    "status": "Completed",
+    "created_at": "2025-06-01 09:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-01 09:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-102",
+    "manager_id": "005",
+    "title": "Setup OAuth2 Authentication",
+    "description": "Integrate Google and GitHub OAuth sign-in flow for the dashboard.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "In Progress",
+    "created_at": "2025-06-03 10:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "In Progress",
+        "timestamp": "2025-06-03 10:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-103",
+    "manager_id": "005",
+    "title": "Write API Documentation",
+    "description": "Document REST API endpoints using Swagger/OpenAPI specifications.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "Medium",
+    "status": "Pending",
+    "created_at": "2025-06-05 11:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-05 11:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-104",
+    "manager_id": "005",
+    "title": "Optimize Image Compression",
+    "description": "Implement lazy loading and WebP conversion for asset uploads.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "Low",
+    "status": "Pending",
+    "created_at": "2025-06-06 09:30:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-06 09:30:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-105",
+    "manager_id": "005",
+    "title": "Setup CI/CD Pipeline",
+    "description": "Configure GitHub Actions for automated testing and deployment.",
+    "employee_id": "EMP-004",
+    "employee": "Raj Patel",
+    "priority": "High",
+    "status": "In Progress",
+    "created_at": "2025-06-07 14:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "In Progress",
+        "timestamp": "2025-06-07 14:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-106",
+    "manager_id": "005",
+    "title": "Frontend Unit Tests",
+    "description": "Write Jest unit tests for React components in the dashboard module.",
+    "employee_id": "EMP-005",
+    "employee": "Lisa Wang",
+    "priority": "Medium",
+    "status": "Pending",
+    "created_at": "2025-06-08 10:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-08 10:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-107",
+    "manager_id": "005",
+    "title": "Mobile Responsive Redesign",
+    "description": "Update all dashboard pages to be fully responsive for tablets and phones.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "Medium",
+    "status": "Completed",
+    "created_at": "2025-06-09 09:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Completed",
+        "timestamp": "2025-06-09 09:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-108",
+    "manager_id": "005",
+    "title": "Security Audit",
+    "description": "Review all API endpoints for authentication gaps and injection vulnerabilities.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "Pending",
+    "created_at": "2025-06-10 08:00:00",
+    "activity_log": [
+      {
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": null,
+        "new_status": "Pending",
+        "timestamp": "2025-06-10 08:00:00",
+        "note": "Initial task creation"
+      }
+    ]
+  },
+  {
+    "id": "TASK-201",
+    "manager_id": "MGR-001",
+    "title": "Design System Token Overhaul",
+    "description": "Harmonize dark mode palette with gold/yellow accent tokens and typography scale.",
+    "employee_id": "EMP-003",
+    "employee": "Emily Chen",
+    "priority": "High",
+    "status": "Completed",
+    "due_date": "2026-08-26",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-25 09:15:00",
+        "action": "Created",
+        "actor": "Alex Morgan",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Task created and assigned to Emily Chen."
+      },
+      {
+        "timestamp": "2026-08-26 14:20:00",
+        "action": "Status Updated",
+        "actor": "Emily Chen",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "Figma design tokens exported to CSS variables"
+      }
+    ],
+    "created_at": "2026-08-25 09:15:00",
+    "updated_at": "2026-08-26 14:20:00"
+  },
+  {
+    "id": "TASK-202",
+    "manager_id": "MGR-001",
+    "title": "GraphQL Query Optimization",
+    "description": "Resolve N+1 query bottlenecks in employee directory lookup endpoints.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "In Progress",
+    "due_date": "2026-08-29",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-26 11:00:00",
+        "action": "Created",
+        "actor": "Alex Morgan",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Assigned to David Miller."
+      },
+      {
+        "timestamp": "2026-08-27 09:10:00",
+        "action": "Status Updated",
+        "actor": "David Miller",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Added DataLoader caching layer"
+      }
+    ],
+    "created_at": "2026-08-26 11:00:00",
+    "updated_at": "2026-08-27 09:10:00"
+  },
+  {
+    "id": "TASK-203",
+    "manager_id": "MGR-001",
+    "title": "Setup Kubernetes Helm Charts",
+    "description": "Draft automated deployment templates for staging and production clusters.",
+    "employee_id": "EMP-004",
+    "employee": "Raj Patel",
+    "priority": "Medium",
+    "status": "Pending",
+    "due_date": "2026-08-30",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 08:30:00",
+        "action": "Created",
+        "actor": "Alex Morgan",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Initial task creation"
+      }
+    ],
+    "created_at": "2026-08-27 08:30:00",
+    "updated_at": "2026-08-27 08:30:00"
+  },
+  {
+    "id": "TASK-204",
+    "manager_id": "MGR-001",
+    "title": "End-to-End Cypress Test Suite",
+    "description": "Write automated UI tests covering task status transitions and leave requests.",
+    "employee_id": "EMP-005",
+    "employee": "Lisa Wang",
+    "priority": "Medium",
+    "status": "In Progress",
+    "due_date": "2026-08-31",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-26 15:45:00",
+        "action": "Created",
+        "actor": "Alex Morgan",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Assigned to Lisa Wang."
+      },
+      {
+        "timestamp": "2026-08-27 10:15:00",
+        "action": "Status Updated",
+        "actor": "Lisa Wang",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Covered auth and task modals"
+      }
+    ],
+    "created_at": "2026-08-26 15:45:00",
+    "updated_at": "2026-08-27 10:15:00"
+  },
+  {
+    "id": "TASK-205",
+    "manager_id": "MGR-001",
+    "title": "Export Productivity Reports to PDF",
+    "description": "Implement printable layout and CSV data download for management reviews.",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "priority": "Low",
+    "status": "Completed",
+    "due_date": "2026-08-24",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-24 09:00:00",
+        "action": "Created",
+        "actor": "Alex Morgan",
+        "previous_status": "",
+        "new_status": "In Progress",
+        "note": "High priority request from CEO"
+      },
+      {
+        "timestamp": "2026-08-24 17:00:00",
+        "action": "Status Updated",
+        "actor": "Sarah Jenkins",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "Client-side PDF & CSV exporter implemented"
+      }
+    ],
+    "created_at": "2026-08-24 09:00:00",
+    "updated_at": "2026-08-24 17:00:00"
+  },
+  {
+    "id": "TASK-206",
+    "manager_id": "MGR-001",
+    "title": "Security Vulnerability Patching",
+    "description": "Update Python package dependencies and patch cryptography modules.",
+    "employee_id": "EMP-002",
+    "employee": "David Miller",
+    "priority": "High",
+    "status": "Pending",
+    "due_date": "2026-08-28",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 11:10:00",
+        "action": "Created",
+        "actor": "Alex Morgan",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Security advisory patch required"
+      }
+    ],
+    "created_at": "2026-08-27 11:10:00",
+    "updated_at": "2026-08-27 11:10:00"
+  }
+]

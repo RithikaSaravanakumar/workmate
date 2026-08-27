@@ -1,0 +1,32 @@
+[
+  {
+    "manager_id": "MGR-001",
+    "full_name": "Alex Morgan",
+    "email": "alex@workmate.io",
+    "phone": "+1 (555) 100-2000",
+    "department": "Engineering",
+    "avatar": "",
+    "password_hash": "54bca9010b28b326848ff71af5eaab4b:4b1c9c001c47e849648442e1a722046ea95b4a475d6da9c33ea6cc98f8623008",
+    "created_at": "2025-01-15 09:00:00"
+  },
+  {
+    "manager_id": "003",
+    "full_name": "rithika",
+    "email": "rithikasaravanakumar005@gmail.com",
+    "phone": "+918015767705",
+    "department": "Operations",
+    "avatar": "",
+    "password_hash": "56840c98320cf1e628f865c330df8974:1874f0a136e7248bd587587d3abfc3f6e4f9e3994d69ff7347e594f08bd6bd63",
+    "created_at": "2026-08-26 16:31:46"
+  },
+  {
+    "manager_id": "005",
+    "full_name": "rithu",
+    "email": "rithikasaravanakumar0005@gmail.com",
+    "phone": "+918015767705",
+    "department": "Human Resources",
+    "avatar": "",
+    "password_hash": "492ac53e9e7b6f663cbca79961e1af1b:c4cf9e6e65dd7565a53031646bc85f0210d46ed4ffce25654cf39233bccb2213",
+    "created_at": "2026-08-27 11:26:50"
+  }
+]

@@ -1,0 +1,101 @@
+[
+  {
+    "employee_id": "EMP-001",
+    "manager_id": "MGR-001",
+    "name": "Sarah Jenkins",
+    "email": "sarah.jenkins@workmate.io",
+    "phone": "+1 (555) 234-5678",
+    "department": "Engineering",
+    "avatar": "",
+    "password_hash": "e01a3c1e13585fcfa582458a16ae3e41:b15e08d4e3283f59a338b9920f13f92e427f73e444b9eabee155da6d1021856b",
+    "created_at": "2025-01-15 09:30:00"
+  },
+  {
+    "employee_id": "EMP-002",
+    "manager_id": "MGR-001",
+    "name": "David Miller",
+    "email": "david.miller@workmate.io",
+    "phone": "+1 (555) 345-6789",
+    "department": "Backend",
+    "avatar": "",
+    "password_hash": "e01a3c1e13585fcfa582458a16ae3e41:b15e08d4e3283f59a338b9920f13f92e427f73e444b9eabee155da6d1021856b",
+    "created_at": "2025-01-16 10:15:00"
+  },
+  {
+    "employee_id": "EMP-003",
+    "manager_id": "MGR-001",
+    "name": "Emily Chen",
+    "email": "emily.chen@workmate.io",
+    "phone": "+1 (555) 456-7890",
+    "department": "Design",
+    "avatar": "",
+    "password_hash": "e01a3c1e13585fcfa582458a16ae3e41:b15e08d4e3283f59a338b9920f13f92e427f73e444b9eabee155da6d1021856b",
+    "created_at": "2025-01-17 11:00:00"
+  },
+  {
+    "employee_id": "EMP-004",
+    "manager_id": "MGR-001",
+    "name": "Raj Patel",
+    "email": "raj.patel@workmate.io",
+    "phone": "+1 (555) 567-8901",
+    "department": "DevOps",
+    "avatar": "",
+    "password_hash": "e01a3c1e13585fcfa582458a16ae3e41:b15e08d4e3283f59a338b9920f13f92e427f73e444b9eabee155da6d1021856b",
+    "created_at": "2025-01-18 14:20:00"
+  },
+  {
+    "employee_id": "EMP-005",
+    "manager_id": "MGR-001",
+    "name": "Lisa Wang",
+    "email": "lisa.wang@workmate.io",
+    "phone": "+1 (555) 678-9012",
+    "department": "QA",
+    "avatar": "",
+    "password_hash": "e01a3c1e13585fcfa582458a16ae3e41:b15e08d4e3283f59a338b9920f13f92e427f73e444b9eabee155da6d1021856b",
+    "created_at": "2025-01-19 16:45:00"
+  },
+  {
+    "employee_id": "EMP-5764",
+    "manager_id": "MGR-001",
+    "name": "Testing Employee",
+    "email": "user.emp-5764@workmate.io",
+    "phone": "+1 (555) 999-8888",
+    "department": "Engineering",
+    "avatar": "",
+    "password_hash": "6ae0983a1b7b4356782790453656032b:a956c40d5cf77fe7fde41537cbc54a3d471dabb8b724cd4810eb2c4621159f25",
+    "created_at": "2026-08-27 12:59:24"
+  },
+  {
+    "employee_id": "EMP-5812",
+    "manager_id": "MGR-001",
+    "name": "Testing Employee",
+    "email": "user.emp-5812@workmate.io",
+    "phone": "+1 (555) 999-8888",
+    "department": "Engineering",
+    "avatar": "",
+    "password_hash": "337a4d0e099628db9a98475a8c2d9d4f:7c2656f1740195904a80497d719ba444bbb64f1d624599ac356a34b170ffa8b9",
+    "created_at": "2026-08-27 13:00:12"
+  },
+  {
+    "employee_id": "EMP-5825",
+    "manager_id": "MGR-001",
+    "name": "Testing Employee",
+    "email": "user.emp-5825@workmate.io",
+    "phone": "+1 (555) 999-8888",
+    "department": "Engineering",
+    "avatar": "",
+    "password_hash": "15a714077c07db0833389d74f932bd6b:a03d36ecb9de4bed1d60c1995bb6868146d5b93eb38ecc84d9ed89ad3c611f49",
+    "created_at": "2026-08-27 13:00:26"
+  },
+  {
+    "employee_id": "EMP-5851",
+    "manager_id": "MGR-001",
+    "name": "Testing Employee",
+    "email": "user.emp-5851@workmate.io",
+    "phone": "+1 (555) 999-8888",
+    "department": "Engineering",
+    "avatar": "",
+    "password_hash": "23b1d193b4d938a53c1e9c82eeaa03b7:a632b15e9c5e86d44e98898ff2b6ea72ab99b813e0b426e190fa84e70eadb6b2",
+    "created_at": "2026-08-27 13:00:51"
+  }
+]
