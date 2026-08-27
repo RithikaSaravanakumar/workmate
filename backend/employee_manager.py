@@ -11,24 +11,18 @@ from datetime import datetime
 from backend.auth import hash_password, verify_password
 
 
+from backend.storage_utils import read_json_file, write_json_file
+
 EMPLOYEES_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "employees.json")
 DEFAULT_EMPLOYEE_PASSWORD = "Emp@1234"
 
 
 def load_employees() -> list:
-    if not os.path.exists(EMPLOYEES_FILE):
-        return []
-    try:
-        with open(EMPLOYEES_FILE, "r", encoding="utf-8") as f:
-            content = f.read().strip()
-            return json.loads(content) if content else []
-    except json.JSONDecodeError:
-        return []
+    return read_json_file(EMPLOYEES_FILE)
 
 
 def save_employees(employees: list) -> None:
-    with open(EMPLOYEES_FILE, "w", encoding="utf-8") as f:
-        json.dump(employees, f, indent=2, ensure_ascii=False)
+    write_json_file(EMPLOYEES_FILE, employees)
 
 
 def is_valid_email(email: str) -> bool:

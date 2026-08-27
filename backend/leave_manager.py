@@ -17,23 +17,18 @@ VALID_LEAVE_TYPES = ["Casual", "Sick", "Earned", "Vacation", "Other"]
 VALID_LEAVE_STATUSES = ["Pending", "Approved", "Rejected"]
 
 
+from backend.storage_utils import read_json_file, write_json_file
+
+
 class LeaveManager:
     def __init__(self, filename: str = LEAVES_FILE):
         self.filename = filename
 
     def _load_leaves(self) -> list:
-        if not os.path.exists(self.filename):
-            return []
-        try:
-            with open(self.filename, "r", encoding="utf-8") as f:
-                content = f.read().strip()
-                return json.loads(content) if content else []
-        except json.JSONDecodeError:
-            return []
+        return read_json_file(self.filename)
 
     def _save_leaves(self, leaves: list) -> None:
-        with open(self.filename, "w", encoding="utf-8") as f:
-            json.dump(leaves, f, indent=2, ensure_ascii=False)
+        write_json_file(self.filename, leaves)
 
     @staticmethod
     def _parse_date(date_str: str) -> date:

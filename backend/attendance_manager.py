@@ -14,23 +14,18 @@ ATTENDANCE_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(_
 TARGET_WORKDAY_MINUTES = 480  # 8 hours
 
 
+from backend.storage_utils import read_json_file, write_json_file
+
+
 class AttendanceManager:
     def __init__(self, filename: str = ATTENDANCE_FILE):
         self.filename = filename
 
     def _load_attendance(self) -> list:
-        if not os.path.exists(self.filename):
-            return []
-        try:
-            with open(self.filename, "r", encoding="utf-8") as f:
-                content = f.read().strip()
-                return json.loads(content) if content else []
-        except json.JSONDecodeError:
-            return []
+        return read_json_file(self.filename)
 
     def _save_attendance(self, records: list) -> None:
-        with open(self.filename, "w", encoding="utf-8") as f:
-            json.dump(records, f, indent=2, ensure_ascii=False)
+        write_json_file(self.filename, records)
 
     @staticmethod
     def _format_time(dt: datetime) -> str:

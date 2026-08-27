@@ -11,25 +11,19 @@ from datetime import datetime
 from backend.auth import hash_password, verify_password
 
 
+from backend.storage_utils import read_json_file, write_json_file
+
 MANAGERS_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "managers.json")
 
 
 def load_managers() -> list:
     """Loads all manager accounts from managers.json."""
-    if not os.path.exists(MANAGERS_FILE):
-        return []
-    try:
-        with open(MANAGERS_FILE, "r", encoding="utf-8") as f:
-            content = f.read().strip()
-            return json.loads(content) if content else []
-    except json.JSONDecodeError:
-        return []
+    return read_json_file(MANAGERS_FILE)
 
 
 def save_managers(managers: list) -> None:
     """Saves the full list of managers to managers.json."""
-    with open(MANAGERS_FILE, "w", encoding="utf-8") as f:
-        json.dump(managers, f, indent=2, ensure_ascii=False)
+    write_json_file(MANAGERS_FILE, managers)
 
 
 def is_valid_email(email: str) -> bool:

@@ -17,23 +17,18 @@ VALID_PRIORITIES = ["Low", "Medium", "High"]
 VALID_STATUSES = ["Pending", "In Progress", "Completed"]
 
 
+from backend.storage_utils import read_json_file, write_json_file
+
+
 class TaskManager:
     def __init__(self, filename: str = TASKS_FILE):
         self.filename = filename
 
     def _load_tasks(self) -> list:
-        if not os.path.exists(self.filename):
-            return []
-        try:
-            with open(self.filename, "r", encoding="utf-8") as f:
-                content = f.read().strip()
-                return json.loads(content) if content else []
-        except json.JSONDecodeError:
-            return []
+        return read_json_file(self.filename)
 
     def _save_tasks(self, tasks: list) -> None:
-        with open(self.filename, "w", encoding="utf-8") as f:
-            json.dump(tasks, f, indent=2, ensure_ascii=False)
+        write_json_file(self.filename, tasks)
 
     def get_tasks_for_manager(self, manager_id: str, search: str = "", status: str = "", priority: str = "", employee_id: str = "", scope: str = "") -> list:
         tasks = self._load_tasks()
