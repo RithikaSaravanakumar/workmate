@@ -278,5 +278,134 @@
     ],
     "created_at": "2026-08-27 13:42:51",
     "updated_at": "2026-08-27 13:42:51"
+  },
+  {
+    "id": "TASK-T6194",
+    "manager_id": "MGR-001",
+    "assigned_by": "Manager",
+    "assigned_by_id": "MGR-001",
+    "assigned_by_role": "manager",
+    "title": "E2E Automated Test Task",
+    "description": "Task created by automated verification script",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "assignee_role": "employee",
+    "priority": "High",
+    "status": "Completed",
+    "due_date": "",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 15:53:14",
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Task created by Manager and assigned to Sarah Jenkins."
+      },
+      {
+        "timestamp": "2026-08-27 15:53:14",
+        "action": "Status Updated",
+        "actor": "EMP-001",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Started working"
+      },
+      {
+        "timestamp": "2026-08-27 15:53:14",
+        "action": "Status Updated",
+        "actor": "EMP-001",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "All requirements done"
+      }
+    ],
+    "created_at": "2026-08-27 15:53:14",
+    "updated_at": "2026-08-27 15:53:14"
+  },
+  {
+    "id": "TASK-T6274",
+    "manager_id": "MGR-001",
+    "assigned_by": "Manager",
+    "assigned_by_id": "MGR-001",
+    "assigned_by_role": "manager",
+    "title": "E2E Automated Test Task",
+    "description": "Task created by automated verification script",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "assignee_role": "employee",
+    "priority": "High",
+    "status": "Completed",
+    "due_date": "",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 15:54:34",
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Task created by Manager and assigned to Sarah Jenkins."
+      },
+      {
+        "timestamp": "2026-08-27 15:54:34",
+        "action": "Status Updated",
+        "actor": "EMP-001",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Started working"
+      },
+      {
+        "timestamp": "2026-08-27 15:54:34",
+        "action": "Status Updated",
+        "actor": "EMP-001",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "All requirements done"
+      }
+    ],
+    "created_at": "2026-08-27 15:54:34",
+    "updated_at": "2026-08-27 15:54:34"
+  },
+  {
+    "id": "TASK-T6298",
+    "manager_id": "MGR-001",
+    "assigned_by": "Manager",
+    "assigned_by_id": "MGR-001",
+    "assigned_by_role": "manager",
+    "title": "E2E Automated Test Task",
+    "description": "Task created by automated verification script",
+    "employee_id": "EMP-001",
+    "employee": "Sarah Jenkins",
+    "assignee_role": "employee",
+    "priority": "High",
+    "status": "Completed",
+    "due_date": "",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 15:54:58",
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Task created by Manager and assigned to Sarah Jenkins."
+      },
+      {
+        "timestamp": "2026-08-27 15:54:58",
+        "action": "Status Updated",
+        "actor": "EMP-001",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Started working"
+      },
+      {
+        "timestamp": "2026-08-27 15:54:58",
+        "action": "Status Updated",
+        "actor": "EMP-001",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "All requirements done"
+      }
+    ],
+    "created_at": "2026-08-27 15:54:58",
+    "updated_at": "2026-08-27 15:54:58"
   }
 ]

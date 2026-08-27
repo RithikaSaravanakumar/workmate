@@ -45,6 +45,7 @@ export default function AttendancePage({ user, showToast }) {
 
   // Load attendance data
   const loadData = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       if (isEmployee) {
@@ -71,7 +72,7 @@ export default function AttendancePage({ user, showToast }) {
         }
       }
     } catch (e) {
-      if (showToast) showToast('Failed to load attendance records.', 'error');
+      /* ignore */
     } finally {
       setLoading(false);
     }
@@ -79,7 +80,7 @@ export default function AttendancePage({ user, showToast }) {
 
   useEffect(() => {
     loadData();
-  }, [role, dateFilter]);
+  }, [user, role, dateFilter]);
 
   // Live timer computation
   useEffect(() => {

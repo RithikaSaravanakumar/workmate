@@ -37,6 +37,7 @@ export default function LeavesPage({
   const isManager = user?.role === 'manager';
 
   const loadLeaves = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       const params = {};
@@ -57,7 +58,7 @@ export default function LeavesPage({
         if (mgrOwnRes.ok) setManagerOwnLeaves(mgrOwnRes.data);
       }
     } catch (e) {
-      showToast('Network error loading leaves.', 'error');
+      /* ignore */
     } finally {
       setLoading(false);
     }

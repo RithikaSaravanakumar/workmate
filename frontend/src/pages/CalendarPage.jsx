@@ -11,16 +11,22 @@ export default function CalendarPage({ user, onOpenLeaveModal, showToast }) {
   const isManager = user?.role === 'manager';
 
   const loadCalendar = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       const res = await api.getCalendar();
-      if (res.ok) {
-        setCalendarData(res.data);
+      if (res.ok && res.data) {
+        setCalendarData({
+          leaves: Array.isArray(res.data.leaves) ? res.data.leaves : [],
+          tasks: Array.isArray(res.data.tasks) ? res.data.tasks : [],
+        });
+      } else if (res.status === 401) {
+        /* Session expired or pending */
       } else {
-        showToast('Failed to load calendar events.', 'error');
+        setCalendarData({ leaves: [], tasks: [] });
       }
     } catch (e) {
-      showToast('Network error.', 'error');
+      setCalendarData({ leaves: [], tasks: [] });
     } finally {
       setLoading(false);
     }

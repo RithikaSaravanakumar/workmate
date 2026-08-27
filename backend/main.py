@@ -38,7 +38,13 @@ def create_app() -> Flask:
     static_dir = os.path.join(backend_dir, "static")
 
     app = Flask(__name__, static_folder=dist_dir if os.path.exists(dist_dir) else static_dir)
-    app.secret_key = secrets.token_hex(32)
+    app.secret_key = os.environ.get("FLASK_SECRET_KEY", "workmate-secure-production-secret-key-2026-fixed-salt-9876543210")
+    app.config.update(
+        SESSION_COOKIE_NAME="workmate_session",
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE="Lax",
+        PERMANENT_SESSION_LIFETIME=86400 * 7,
+    )
 
     # Register API blueprint
     app.register_blueprint(bp)

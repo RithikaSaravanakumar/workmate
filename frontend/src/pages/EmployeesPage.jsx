@@ -45,19 +45,21 @@ export default function EmployeesPage({
   const isManager = role === 'manager';
 
   const loadEmployees = async () => {
+    if (!user) return;
     setLoading(true);
     setError(null);
     try {
       const res = await api.getEmployees();
       if (res.ok) {
         setEmployees(res.data || []);
+      } else if (res.status === 401) {
+        /* Session loading */
       } else {
         setError(res.data?.error || 'Failed to load employee directory.');
         if (showToast) showToast(res.data?.error || 'Failed to load employees.', 'error');
       }
     } catch (e) {
-      setError('Network error loading employees. Please check backend server connection.');
-      if (showToast) showToast('Network error loading employees.', 'error');
+      setError('Network error loading employees.');
     } finally {
       setLoading(false);
     }

@@ -686,6 +686,78 @@ class TaskManager:
         if not has_employee_tasks or not has_manager_tasks:
             self._save_tasks(tasks)
 
+    def get_dashboard_stats(self, manager_id: str, employees: list) -> dict:
+        norm_mgr_id = "MGR-001" if manager_id.strip().upper() in ["003", "MGR-001"] else manager_id.strip().upper()
+        tasks = self.get_tasks_for_manager(manager_id, scope="all")
+
+        total = len(tasks)
+        completed = sum(1 for t in tasks if t.get("status") == "Completed")
+        in_progress = sum(1 for t in tasks if t.get("status") == "In Progress")
+        pending = sum(1 for t in tasks if t.get("status") == "Pending")
+        rate = round((completed / total * 100), 1) if total > 0 else 0
+
+        my_tasks = [t for t in tasks if t.get("employee_id") == norm_mgr_id]
+        team_tasks = [t for t in tasks if t.get("employee_id") != norm_mgr_id]
+
+        recent_activity = []
+        for t in tasks:
+            for act in t.get("activity_log", []):
+                recent_activity.append({
+                    "task_id": t.get("id"),
+                    "task_title": t.get("title"),
+                    "employee": t.get("employee"),
+                    **act
+                })
+        recent_activity.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+
+        urgent_tasks = [t for t in tasks if t.get("priority") == "High" and t.get("status") != "Completed"]
+
+        return {
+            "total_tasks": total,
+            "completed_tasks": completed,
+            "in_progress_tasks": in_progress,
+            "pending_tasks": pending,
+            "completion_rate": rate,
+            "total_employees": len(employees),
+            "tasks": tasks,
+            "my_tasks": my_tasks,
+            "team_tasks": team_tasks,
+            "urgent_tasks": urgent_tasks,
+            "recent_activity": recent_activity[:10],
+        }
+
+    def get_employee_dashboard_stats(self, employee_id: str) -> dict:
+        tasks = self.get_tasks_for_employee(employee_id)
+        total = len(tasks)
+        completed = sum(1 for t in tasks if t.get("status") == "Completed")
+        in_progress = sum(1 for t in tasks if t.get("status") == "In Progress")
+        pending = sum(1 for t in tasks if t.get("status") == "Pending")
+        rate = round((completed / total * 100), 1) if total > 0 else 0
+
+        recent_activity = []
+        for t in tasks:
+            for act in t.get("activity_log", []):
+                recent_activity.append({
+                    "task_id": t.get("id"),
+                    "task_title": t.get("title"),
+                    **act
+                })
+        recent_activity.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+
+        urgent_tasks = [t for t in tasks if t.get("priority") == "High" and t.get("status") != "Completed"]
+
+        return {
+            "total_tasks": total,
+            "completed_tasks": completed,
+            "in_progress_tasks": in_progress,
+            "pending_tasks": pending,
+            "completion_rate": rate,
+            "my_tasks": tasks,
+            "tasks": tasks,
+            "urgent_tasks": urgent_tasks,
+            "recent_activity": recent_activity[:10],
+        }
+
 
 task_manager = TaskManager()
 

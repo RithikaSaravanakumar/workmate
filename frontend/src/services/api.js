@@ -1,13 +1,43 @@
 /**
  * frontend/src/services/api.js — Unified API Client
- * Wraps fetch calls to Flask backend with credentials & JSON parsing.
+ * Wraps fetch calls to Flask backend with credentials, Bearer Token fallback & JSON parsing.
  */
 
+export const TOKEN_KEY = 'workmate_auth_token';
+
+export function getStoredToken() {
+  try {
+    return localStorage.getItem(TOKEN_KEY) || '';
+  } catch (e) {
+    return '';
+  }
+}
+
+export function setStoredToken(token) {
+  try {
+    if (token) {
+      localStorage.setItem(TOKEN_KEY, token);
+    } else {
+      localStorage.removeItem(TOKEN_KEY);
+    }
+  } catch (e) {
+    /* ignore */
+  }
+}
+
 export async function apiFetch(endpoint, options = {}) {
+  const token = getStoredToken();
+  const defaultHeaders = {
+    'Content-Type': 'application/json',
+  };
+
+  if (token) {
+    defaultHeaders['Authorization'] = `Bearer ${token}`;
+    defaultHeaders['X-Auth-Token'] = token;
+  }
+
   const defaultOptions = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: defaultHeaders,
     credentials: 'include',
   };
 
@@ -39,10 +69,28 @@ export async function apiFetch(endpoint, options = {}) {
 
 export const api = {
   // Auth
-  login: (credentials) => apiFetch('/api/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
-  register: (data) => apiFetch('/api/auth/register', { method: 'POST', body: JSON.stringify(data) }),
+  login: async (credentials) => {
+    const res = await apiFetch('/api/auth/login', { method: 'POST', body: JSON.stringify(credentials) });
+    if (res.ok && res.data && res.data.token) {
+      setStoredToken(res.data.token);
+    }
+    return res;
+  },
+  register: async (data) => {
+    const res = await apiFetch('/api/auth/register', { method: 'POST', body: JSON.stringify(data) });
+    if (res.ok && res.data && res.data.token) {
+      setStoredToken(res.data.token);
+    }
+    return res;
+  },
   getMe: () => apiFetch('/api/auth/me'),
-  logout: () => apiFetch('/api/auth/logout', { method: 'POST' }),
+  logout: async () => {
+    try {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+    } finally {
+      setStoredToken(null);
+    }
+  },
   updateProfile: (data) => apiFetch('/api/auth/profile', { method: 'PUT', body: JSON.stringify(data) }),
   changePassword: (data) => apiFetch('/api/auth/password', { method: 'PUT', body: JSON.stringify(data) }),
 

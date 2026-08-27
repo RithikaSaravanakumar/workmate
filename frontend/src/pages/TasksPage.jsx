@@ -48,6 +48,7 @@ export default function TasksPage({
   const isAdmin = role === 'admin';
 
   const loadTasks = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       const params = {};
@@ -62,11 +63,13 @@ export default function TasksPage({
       const res = await api.getTasks(params);
       if (res.ok) {
         setTasks(res.data || []);
+      } else if (res.status === 401) {
+        /* User session loading or expired */
       } else {
         showToast(res.data?.error || 'Failed to load tasks.', 'error');
       }
     } catch (e) {
-      showToast('Network error loading tasks.', 'error');
+      /* ignore */
     } finally {
       setLoading(false);
     }

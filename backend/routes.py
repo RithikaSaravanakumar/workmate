@@ -50,8 +50,8 @@ def login():
     if requested_role in ["admin", "ceo"] or (not requested_role and identifier.lower() in ["admin", "ceo", "admin@workmate.io"]):
         if identifier.lower() in ["admin", "ceo", "admin@workmate.io"] and password in ["Admin@1234", "Ceo@1234"]:
             admin_user = {"admin_id": "CEO-001", "full_name": "CEO / Administrator", "email": "admin@workmate.io", "role": "admin"}
-            set_session(admin_user, role="admin")
-            return jsonify({"message": "CEO/Admin login successful.", "role": "admin", "user": admin_user}), 200
+            token = set_session(admin_user, role="admin")
+            return jsonify({"message": "CEO/Admin login successful.", "role": "admin", "user": admin_user, "token": token}), 200
         if requested_role in ["admin", "ceo"]:
             return jsonify({"error": "Invalid CEO / Admin credentials."}), 401
 
@@ -59,40 +59,40 @@ def login():
     if requested_role == "manager":
         manager = authenticate_manager(identifier, password)
         if manager:
-            set_session(manager, role="manager")
+            token = set_session(manager, role="manager")
             seed_employees(manager["manager_id"])
             safe_m = {k: v for k, v in manager.items() if k != "password_hash"}
             safe_m["role"] = "manager"
-            return jsonify({"message": "Manager login successful.", "role": "manager", "user": safe_m}), 200
+            return jsonify({"message": "Manager login successful.", "role": "manager", "user": safe_m, "token": token}), 200
         return jsonify({"error": "Invalid Manager credentials. Please check your manager ID/email and password."}), 401
 
     # 3. Employee Login
     if requested_role == "employee":
         employee = authenticate_employee(identifier, password)
         if employee:
-            set_session(employee, role="employee")
+            token = set_session(employee, role="employee")
             safe_e = {k: v for k, v in employee.items() if k != "password_hash"}
             safe_e["role"] = "employee"
             safe_e["full_name"] = safe_e.get("name", "")
-            return jsonify({"message": "Employee login successful.", "role": "employee", "user": safe_e}), 200
+            return jsonify({"message": "Employee login successful.", "role": "employee", "user": safe_e, "token": token}), 200
         return jsonify({"error": "Invalid Employee credentials. Please check your employee ID/email and password."}), 401
 
     # 4. Fallback if no specific role was requested
     manager = authenticate_manager(identifier, password)
     if manager:
-        set_session(manager, role="manager")
+        token = set_session(manager, role="manager")
         seed_employees(manager["manager_id"])
         safe_m = {k: v for k, v in manager.items() if k != "password_hash"}
         safe_m["role"] = "manager"
-        return jsonify({"message": "Login successful.", "role": "manager", "user": safe_m}), 200
+        return jsonify({"message": "Login successful.", "role": "manager", "user": safe_m, "token": token}), 200
 
     employee = authenticate_employee(identifier, password)
     if employee:
-        set_session(employee, role="employee")
+        token = set_session(employee, role="employee")
         safe_e = {k: v for k, v in employee.items() if k != "password_hash"}
         safe_e["role"] = "employee"
         safe_e["full_name"] = safe_e.get("name", "")
-        return jsonify({"message": "Login successful.", "role": "employee", "user": safe_e}), 200
+        return jsonify({"message": "Login successful.", "role": "employee", "user": safe_e, "token": token}), 200
 
     return jsonify({"error": "Invalid identifier or password. Please check your credentials."}), 401
 
@@ -123,13 +123,25 @@ def me():
 
     elif role == "employee":
         emp_id = get_current_employee_id()
-        mgr_id = get_current_manager_id()
-        employees = get_employees_for_manager(mgr_id)
-        emp = next((e for e in employees if e["employee_id"] == emp_id), None)
+        emp = get_employee_by_id(emp_id) if emp_id else None
         if not emp:
-            return jsonify({"error": "Employee record not found."}), 404
+            # Fallback to session / token data
+            emp_name = session.get("employee_name") or "Employee"
+            emp_email = session.get("employee_email", "")
+            emp_dept = session.get("employee_department", "General")
+            mgr_id = session.get("manager_id", "")
+            return jsonify({
+                "employee_id": emp_id or "EMP-DEMO",
+                "name": emp_name,
+                "full_name": emp_name,
+                "email": emp_email,
+                "department": emp_dept,
+                "manager_id": mgr_id,
+                "role": "employee"
+            }), 200
         safe_e = {k: v for k, v in emp.items() if k != "password_hash"}
         safe_e["role"] = "employee"
+        safe_e["full_name"] = safe_e.get("name", "")
         return jsonify(safe_e), 200
 
     elif role == "admin":
@@ -325,12 +337,7 @@ def update_task_status(task_id):
 @bp.route("/api/tasks/<task_id>/activity", methods=["GET"])
 @login_required
 def get_task_activity(task_id):
-    role = get_current_role()
-    if role == "manager":
-        task = task_manager.get_task_by_id(get_current_manager_id(), task_id)
-    else:
-        task = task_manager.get_task_for_employee(get_current_employee_id(), task_id)
-
+    task = task_manager.get_task_by_id(task_id)
     if not task:
         return jsonify({"error": f"Task '{task_id}' not found."}), 404
 

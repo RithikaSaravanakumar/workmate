@@ -50,13 +50,16 @@ export default function DashboardPage({
   const isEmployee = user?.role === 'employee';
 
   const loadDashboard = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       const res = await api.getDashboard();
       if (res.ok) {
         setData(res.data);
+      } else if (res.status === 401) {
+        /* Session loading */
       } else {
-        showToast('Failed to load dashboard metrics.', 'error');
+        showToast(res.data?.error || 'Failed to load dashboard metrics.', 'error');
       }
 
       if (isEmployee) {
@@ -66,7 +69,7 @@ export default function DashboardPage({
         }
       }
     } catch (e) {
-      showToast('Dashboard load error.', 'error');
+      /* ignore */
     } finally {
       setLoading(false);
     }

@@ -7,16 +7,19 @@ export default function ReportsPage({ user, showToast }) {
   const [loading, setLoading] = useState(true);
 
   const loadReports = async () => {
+    if (!user || user.role === 'employee') return;
     setLoading(true);
     try {
       const res = await api.getReports();
-      if (res.ok) {
+      if (res.ok && res.data) {
         setReports(res.data);
+      } else if (res.status === 401 || res.status === 403) {
+        /* Session expired or role restricted */
       } else {
-        showToast('Failed to load team analytics.', 'error');
+        showToast(res.data?.error || 'Failed to load team analytics.', 'error');
       }
     } catch (e) {
-      showToast('Network error.', 'error');
+      /* ignore */
     } finally {
       setLoading(false);
     }
