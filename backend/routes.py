@@ -522,18 +522,26 @@ def create_leave():
 
     if role == "employee":
         emp_id = get_current_employee_id()
-        data["employee_id"] = emp_id
-        data["employee_name"] = session.get("employee_name", "")
-        data["department"] = session.get("employee_department", "")
+        emp = get_employee_by_id(emp_id) if emp_id else None
+        
+        emp_name = ""
+        emp_dept = ""
+        manager_id = ""
+        if emp:
+            emp_name = emp.get("name") or emp.get("full_name", "")
+            emp_dept = emp.get("department", "")
+            manager_id = emp.get("manager_id", "")
+        
+        if not emp_name:
+            emp_name = session.get("employee_name") or session.get("name") or "Employee"
+        if not emp_dept:
+            emp_dept = session.get("employee_department") or "Engineering"
+        if not manager_id:
+            manager_id = session.get("manager_id") or "MGR-001"
 
-        manager_id = session.get("manager_id")
-        if not manager_id:
-            emp = get_employee_by_id(emp_id)
-            if emp and emp.get("manager_id"):
-                manager_id = emp["manager_id"]
-                session["manager_id"] = manager_id
-        if not manager_id:
-            manager_id = "MGR-001"
+        data["employee_id"] = emp_id
+        data["employee_name"] = emp_name
+        data["department"] = emp_dept
     elif role == "manager":
         manager_id = get_current_manager_id()
     else:

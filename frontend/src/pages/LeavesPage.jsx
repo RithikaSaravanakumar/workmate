@@ -82,7 +82,9 @@ export default function LeavesPage({
     }
   };
 
-  const displayedLeaves = isManager && activeTab === 'my-leaves' ? managerOwnLeaves : leaves;
+  const displayedLeaves = isManager
+    ? (activeTab === 'my-leaves' ? managerOwnLeaves : leaves)
+    : leaves.filter((l) => !l.is_manager_leave && (l.employee_id === user?.employee_id || l.employee_name === (user?.full_name || user?.name)));
 
   return (
     <div>
@@ -93,13 +95,13 @@ export default function LeavesPage({
             <div className="stat-icon" style={{ background: 'var(--amber-bg)', color: 'var(--amber)' }}>
               <Clock size={20} />
             </div>
-            <span className="badge badge-pending">Action Needed</span>
+            <span className="badge badge-pending">{isManager ? 'Action Needed' : 'In Review'}</span>
           </div>
           <div className="stat-value" style={{ color: 'var(--amber)' }}>
             {stats?.pending || 0}
           </div>
-          <div className="stat-label">Pending Reviews</div>
-          <div className="stat-sub">Awaiting management sign-off</div>
+          <div className="stat-label">{isManager ? 'Pending Team Reviews' : 'Pending Requests'}</div>
+          <div className="stat-sub">{isManager ? 'Awaiting your sign-off' : 'Awaiting manager approval'}</div>
         </div>
 
         <div className="stat-card stat-card-emerald">
@@ -112,21 +114,22 @@ export default function LeavesPage({
           <div className="stat-value" style={{ color: 'var(--emerald)' }}>
             {stats?.approved || 0}
           </div>
-          <div className="stat-label">Approved Requests</div>
+          <div className="stat-label">{isManager ? 'Approved Team Leaves' : 'Approved Requests'}</div>
           <div className="stat-sub">Granted time off</div>
         </div>
 
         <div className="stat-card stat-card-gold">
           <div className="stat-card-top">
             <div className="stat-icon" style={{ background: 'var(--primary-light)', color: 'var(--primary-yellow)' }}>
-              <Calendar size={20} />
+              <Palmtree size={20} />
             </div>
+            <span className="stat-trend trend-up">
+              <Calendar size={12} /> {stats?.total_leave_days_approved || 0} Days
+            </span>
           </div>
-          <div className="stat-value" style={{ color: 'var(--primary-yellow)' }}>
-            {stats?.total_days_off || 0}
-          </div>
-          <div className="stat-label">Total Days Off</div>
-          <div className="stat-sub">Cumulative team leave days</div>
+          <div className="stat-value">{stats?.total_leave_days_approved || 0}</div>
+          <div className="stat-label">{isManager ? 'Total Team Days Off' : 'Total Days Taken'}</div>
+          <div className="stat-sub">Paid time off utilized</div>
         </div>
 
         <div className="stat-card stat-card-rose">
@@ -157,7 +160,7 @@ export default function LeavesPage({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
-          {isManager && (
+          {isManager ? (
             <div
               style={{
                 display: 'flex',
@@ -200,6 +203,10 @@ export default function LeavesPage({
                 My Manager Leaves (To CEO)
               </button>
             </div>
+          ) : (
+            <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text-100)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Palmtree size={18} color="var(--primary-yellow)" /> My Time Off Applications
+            </div>
           )}
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -230,9 +237,9 @@ export default function LeavesPage({
           </div>
         </div>
 
-        <button className="btn btn-primary" onClick={onOpenLeaveModal}>
+        <button className="btn btn-primary" onClick={onOpenLeaveModal} id="request-leave-btn">
           <Plus size={16} />
-          <span>{isManager ? '+ Request Manager Leave' : '+ Request Time Off'}</span>
+          <span>{isManager ? (activeTab === 'my-leaves' ? '+ Apply for Executive Leave' : '+ Create Leave on Behalf') : '+ Apply for Time Off'}</span>
         </button>
       </div>
 
@@ -243,12 +250,13 @@ export default function LeavesPage({
             <thead>
               <tr>
                 <th>Request ID</th>
-                <th>Employee</th>
+                {isManager && activeTab === 'team' && <th>Team Member</th>}
                 <th>Category</th>
                 <th>Dates</th>
                 <th>Duration</th>
                 <th>Status</th>
                 <th>Reason</th>
+                {!isManager && <th>Manager Decision &amp; Feedback</th>}
                 <th style={{ textAlign: 'right' }}>Actions</th>
               </tr>
             </thead>
@@ -262,7 +270,9 @@ export default function LeavesPage({
               ) : displayedLeaves.length === 0 ? (
                 <tr>
                   <td colSpan={8} style={{ textAlign: 'center', padding: '40px', color: 'var(--text-muted)' }}>
-                    No leave requests found.
+                    {isManager
+                      ? (activeTab === 'my-leaves' ? 'No executive leaves submitted to CEO yet.' : 'No team leave requests submitted.')
+                      : 'You have not submitted any leave requests yet.'}
                   </td>
                 </tr>
               ) : (
@@ -273,20 +283,22 @@ export default function LeavesPage({
                         {l.id}
                       </span>
                     </td>
-                    <td>
-                      <div className="table-avatar-cell">
-                        <div
-                          className="table-avatar"
-                          style={{ background: 'linear-gradient(135deg, #FFE44D, #FFD21F)', color: '#0A0A0A' }}
-                        >
-                          {(l.employee_name || 'U')[0]}
+                    {isManager && activeTab === 'team' && (
+                      <td>
+                        <div className="table-avatar-cell">
+                          <div
+                            className="table-avatar"
+                            style={{ background: 'linear-gradient(135deg, #FFE44D, #FFD21F)', color: '#0A0A0A' }}
+                          >
+                            {(l.employee_name || 'E')[0]}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-100)' }}>{l.employee_name}</div>
+                            <div style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>{l.department || 'Team'} • {l.employee_id}</div>
+                          </div>
                         </div>
-                        <div>
-                          <div style={{ fontWeight: 700, color: 'var(--text-100)' }}>{l.employee_name}</div>
-                          <div style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>{l.department}</div>
-                        </div>
-                      </div>
-                    </td>
+                      </td>
+                    )}
                     <td>
                       <span
                         className="badge"
@@ -323,6 +335,11 @@ export default function LeavesPage({
                     <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '12.5px', color: 'var(--text-300)' }}>
                       "{l.reason}"
                     </td>
+                    {!isManager && (
+                      <td style={{ fontSize: '12.5px', color: l.status === 'Rejected' ? 'var(--coral)' : 'var(--text-200)' }}>
+                        {l.manager_comment || (l.status === 'Pending' ? '⏳ Under review by manager' : '—')}
+                      </td>
+                    )}
                     <td style={{ textAlign: 'right' }}>
                       <div style={{ display: 'inline-flex', gap: '6px' }}>
                         <button
@@ -350,13 +367,15 @@ export default function LeavesPage({
                             </button>
                           </>
                         )}
-                        <button
-                          className="btn btn-danger btn-sm"
-                          title="Delete Request"
-                          onClick={() => onDeleteLeave(l.id)}
-                        >
-                          <Trash2 size={13} />
-                        </button>
+                        {(isManager || l.status === 'Pending') && (
+                          <button
+                            className="btn btn-danger btn-sm"
+                            title="Delete Request"
+                            onClick={() => onDeleteLeave(l.id)}
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>

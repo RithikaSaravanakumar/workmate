@@ -14,7 +14,8 @@
     "rejection_reason": "",
     "manager_comment": "Approved. Please sync with David before leaving.",
     "created_at": "2026-08-02 09:15:00",
-    "updated_at": "2026-08-02 11:30:00"
+    "updated_at": "2026-08-02 11:30:00",
+    "is_manager_leave": false
   },
   {
     "id": "LEV-102",
@@ -31,7 +32,8 @@
     "rejection_reason": "",
     "manager_comment": "Take care Emily!",
     "created_at": "2026-08-05 08:30:00",
-    "updated_at": "2026-08-05 09:00:00"
+    "updated_at": "2026-08-05 09:00:00",
+    "is_manager_leave": false
   },
   {
     "id": "LEV-103",
@@ -48,7 +50,8 @@
     "rejection_reason": "Please reschedule to after the quarterly milestone review.",
     "manager_comment": "Rejected: Please reschedule to after the quarterly milestone review.",
     "created_at": "2026-08-06 14:20:00",
-    "updated_at": "2026-08-27 12:02:31"
+    "updated_at": "2026-08-27 12:02:31",
+    "is_manager_leave": false
   },
   {
     "id": "LEV-104",
@@ -65,7 +68,8 @@
     "rejection_reason": "",
     "manager_comment": "",
     "created_at": "2026-08-07 10:45:00",
-    "updated_at": "2026-08-07 10:45:00"
+    "updated_at": "2026-08-07 10:45:00",
+    "is_manager_leave": false
   },
   {
     "id": "LEV-105",
@@ -82,10 +86,11 @@
     "rejection_reason": "Sprint release deadline clashes on these dates. Please reschedule after release.",
     "manager_comment": "Discussed in 1:1 meeting.",
     "created_at": "2026-08-01 11:00:00",
-    "updated_at": "2026-08-01 16:30:00"
+    "updated_at": "2026-08-01 16:30:00",
+    "is_manager_leave": false
   },
   {
-    "id": "LEV-101",
+    "id": "LEV-106",
     "manager_id": "003",
     "employee_id": "EMP-001",
     "employee_name": "Sarah Jenkins",
@@ -99,10 +104,11 @@
     "rejection_reason": "",
     "manager_comment": "Approved. Please sync with David before leaving.",
     "created_at": "2026-08-02 09:15:00",
-    "updated_at": "2026-08-02 11:30:00"
+    "updated_at": "2026-08-02 11:30:00",
+    "is_manager_leave": false
   },
   {
-    "id": "LEV-102",
+    "id": "LEV-107",
     "manager_id": "003",
     "employee_id": "EMP-003",
     "employee_name": "Emily Chen",
@@ -116,10 +122,11 @@
     "rejection_reason": "",
     "manager_comment": "Take care Emily!",
     "created_at": "2026-08-05 08:30:00",
-    "updated_at": "2026-08-05 09:00:00"
+    "updated_at": "2026-08-05 09:00:00",
+    "is_manager_leave": false
   },
   {
-    "id": "LEV-103",
+    "id": "LEV-108",
     "manager_id": "003",
     "employee_id": "EMP-002",
     "employee_name": "David Miller",
@@ -133,10 +140,11 @@
     "rejection_reason": "",
     "manager_comment": "",
     "created_at": "2026-08-06 14:20:00",
-    "updated_at": "2026-08-06 14:20:00"
+    "updated_at": "2026-08-06 14:20:00",
+    "is_manager_leave": false
   },
   {
-    "id": "LEV-104",
+    "id": "LEV-109",
     "manager_id": "003",
     "employee_id": "EMP-004",
     "employee_name": "Raj Patel",
@@ -150,10 +158,11 @@
     "rejection_reason": "",
     "manager_comment": "",
     "created_at": "2026-08-07 10:45:00",
-    "updated_at": "2026-08-07 10:45:00"
+    "updated_at": "2026-08-07 10:45:00",
+    "is_manager_leave": false
   },
   {
-    "id": "LEV-105",
+    "id": "LEV-110",
     "manager_id": "003",
     "employee_id": "EMP-005",
     "employee_name": "Lisa Wang",
@@ -167,7 +176,8 @@
     "rejection_reason": "Sprint release deadline clashes on these dates. Please reschedule after release.",
     "manager_comment": "Discussed in 1:1 meeting.",
     "created_at": "2026-08-01 11:00:00",
-    "updated_at": "2026-08-01 16:30:00"
+    "updated_at": "2026-08-01 16:30:00",
+    "is_manager_leave": false
   },
   {
     "employee_id": "EMP-001",
@@ -179,15 +189,16 @@
     "reason": "family function",
     "days_count": 1,
     "status": "Approved",
-    "id": "LEV-106",
+    "id": "LEV-111",
     "manager_id": "MGR-001",
     "created_at": "2026-08-27 11:43:10",
     "updated_at": "2026-08-27 11:57:18",
     "rejection_reason": "",
-    "manager_comment": "Approved by manager."
+    "manager_comment": "Approved by manager.",
+    "is_manager_leave": false
   },
   {
-    "id": "LEV-107",
+    "id": "LEV-112",
     "manager_id": "MGR-001",
     "employee_id": "EMP-001",
     "employee_name": "Sarah Jenkins",
@@ -205,11 +216,11 @@
     "updated_at": "2026-08-27 12:36:18"
   },
   {
-    "id": "LEV-108",
+    "id": "LEV-113",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Earned",
     "start_date": "2026-10-06",
     "end_date": "2026-10-08",
@@ -223,7 +234,7 @@
     "updated_at": "2026-08-27 12:58:16"
   },
   {
-    "id": "LEV-109",
+    "id": "LEV-114",
     "manager_id": "MGR-001",
     "employee_id": "EMP-002",
     "employee_name": "David Miller",
@@ -241,11 +252,11 @@
     "updated_at": "2026-08-27 12:59:24"
   },
   {
-    "id": "LEV-110",
+    "id": "LEV-115",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Earned",
     "start_date": "2026-12-25",
     "end_date": "2026-12-27",
@@ -259,7 +270,7 @@
     "updated_at": "2026-08-27 13:00:13"
   },
   {
-    "id": "LEV-111",
+    "id": "LEV-116",
     "manager_id": "MGR-001",
     "employee_id": "EMP-002",
     "employee_name": "David Miller",
@@ -277,7 +288,7 @@
     "updated_at": "2026-08-27 13:00:26"
   },
   {
-    "id": "LEV-112",
+    "id": "LEV-117",
     "manager_id": "MGR-001",
     "employee_id": "EMP-002",
     "employee_name": "David Miller",
@@ -295,11 +306,11 @@
     "updated_at": "2026-08-27 13:00:52"
   },
   {
-    "id": "LEV-113",
+    "id": "LEV-118",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Earned",
     "start_date": "2028-03-01",
     "end_date": "2028-03-03",
@@ -313,11 +324,11 @@
     "updated_at": "2026-08-27 13:00:52"
   },
   {
-    "id": "LEV-114",
+    "id": "LEV-119",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Vacation",
     "start_date": "2026-11-01",
     "end_date": "2026-11-05",
@@ -331,11 +342,11 @@
     "updated_at": "2026-08-27 14:18:45"
   },
   {
-    "id": "LEV-115",
+    "id": "LEV-120",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Vacation",
     "start_date": "2027-01-11",
     "end_date": "2027-01-13",
@@ -349,7 +360,7 @@
     "updated_at": "2026-08-27 14:19:11"
   },
   {
-    "id": "LEV-116",
+    "id": "LEV-121",
     "manager_id": "MGR-001",
     "employee_id": "EMP-001",
     "employee_name": "Sarah Jenkins",
@@ -367,11 +378,11 @@
     "updated_at": "2026-08-27 14:19:11"
   },
   {
-    "id": "LEV-117",
+    "id": "LEV-122",
     "manager_id": "MGR-001",
     "employee_id": "EMP-001",
-    "employee_name": "Manager",
-    "department": "Management",
+    "employee_name": "Sarah Jenkins",
+    "department": "Engineering",
     "leave_type": "Casual",
     "start_date": "2026-09-10",
     "end_date": "2026-09-12",
@@ -385,11 +396,11 @@
     "updated_at": "2026-08-27 15:53:15"
   },
   {
-    "id": "LEV-118",
+    "id": "LEV-123",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Vacation",
     "start_date": "2026-09-15",
     "end_date": "2026-09-18",
@@ -403,11 +414,11 @@
     "updated_at": "2026-08-27 15:53:15"
   },
   {
-    "id": "LEV-119",
+    "id": "LEV-124",
     "manager_id": "MGR-001",
     "employee_id": "EMP-001",
-    "employee_name": "Manager",
-    "department": "Management",
+    "employee_name": "Sarah Jenkins",
+    "department": "Engineering",
     "leave_type": "Casual",
     "start_date": "2027-01-13",
     "end_date": "2027-01-15",
@@ -421,11 +432,11 @@
     "updated_at": "2026-08-27 15:54:58"
   },
   {
-    "id": "LEV-120",
+    "id": "LEV-125",
     "manager_id": "MGR-001",
     "employee_id": "MGR-001",
     "employee_name": "Alex Morgan",
-    "department": "Engineering",
+    "department": "Engineering Management",
     "leave_type": "Vacation",
     "start_date": "2027-02-13",
     "end_date": "2027-02-15",
@@ -439,11 +450,11 @@
     "updated_at": "2026-08-27 15:54:58"
   },
   {
-    "id": "LEV-121",
+    "id": "LEV-126",
     "manager_id": "MGR-001",
     "employee_id": "EMP-001",
-    "employee_name": "Manager",
-    "department": "Management",
+    "employee_name": "Sarah Jenkins",
+    "department": "Engineering",
     "leave_type": "Casual",
     "start_date": "2027-06-13",
     "end_date": "2027-06-15",
