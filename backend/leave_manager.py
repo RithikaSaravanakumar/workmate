@@ -13,7 +13,7 @@ from datetime import datetime, date
 
 LEAVES_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leaves.json")
 
-VALID_LEAVE_TYPES = ["Casual", "Sick", "Earned", "Other"]
+VALID_LEAVE_TYPES = ["Casual", "Sick", "Earned", "Vacation", "Other"]
 VALID_LEAVE_STATUSES = ["Pending", "Approved", "Rejected"]
 
 

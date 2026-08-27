@@ -1096,14 +1096,24 @@ def get_reports():
 def get_calendar():
     role = get_current_role()
     if role == "manager":
-        leaves = leave_manager.get_leaves_for_manager(get_current_manager_id(), status="Approved")
-        tasks = task_manager.get_tasks_for_manager(get_current_manager_id())
+        mgr_id = get_current_manager_id()
+        # 1. Employee approved leave dates for employees in the Manager's team
+        team_leaves = leave_manager.get_leaves_for_manager(mgr_id, status="Approved")
+        # 2. Manager's own approved leave
+        my_leaves = leave_manager.get_manager_own_leaves(mgr_id)
+        approved_my_leaves = [l for l in my_leaves if l.get("status") == "Approved"]
+        leaves = team_leaves + approved_my_leaves
+
+        # 3. Task due dates for team employees + 4. Tasks assigned to Manager by CEO/Admin
+        tasks = task_manager.get_tasks_for_manager(mgr_id, scope="all")
     elif role == "employee":
-        leaves = leave_manager.get_leaves_for_employee(get_current_employee_id(), status="Approved")
-        tasks = task_manager.get_tasks_for_employee(get_current_employee_id())
+        emp_id = get_current_employee_id()
+        leaves = leave_manager.get_leaves_for_employee(emp_id, status="Approved")
+        tasks = task_manager.get_tasks_for_employee(emp_id)
     else:
-        leaves = leave_manager.get_all_manager_leaves_for_admin()
-        tasks = []
+        all_leaves = leave_manager.get_all_leaves()
+        leaves = [l for l in all_leaves if l.get("status") == "Approved"]
+        tasks = task_manager.get_all_tasks_for_admin()
 
     return jsonify({
         "leaves": leaves,
