@@ -343,16 +343,28 @@ export default function TasksPage({
             </button>
           </div>
 
-          {isManager && activeTab === 'team' && (
-            <button className="btn btn-primary btn-sm" onClick={onOpenTaskModal}>
-              <Plus size={15} />
+          {isManager && (
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={onOpenTaskModal}
+              id="create-task-primary-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                fontWeight: 800,
+                boxShadow: 'var(--glow-gold)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Plus size={16} />
               <span>+ Create Task</span>
             </button>
           )}
 
           {isAdmin && (
-            <button className="btn btn-primary btn-sm" onClick={onOpenTaskModal}>
-              <Plus size={15} />
+            <button className="btn btn-primary btn-sm" onClick={onOpenTaskModal} id="admin-create-task-btn">
+              <Plus size={16} />
               <span>+ Assign Task to Manager</span>
             </button>
           )}
@@ -393,7 +405,7 @@ export default function TasksPage({
               ? 'You have no direct tasks assigned from the Executive Office at this time.'
               : 'You have no assigned tasks currently.'}
           </p>
-          {isManager && activeTab === 'team' && (
+          {isManager && (
             <button className="btn btn-primary" onClick={onOpenTaskModal}>
               <Plus size={16} /> + Assign Task
             </button>

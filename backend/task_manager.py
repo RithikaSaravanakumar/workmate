@@ -64,7 +64,15 @@ class TaskManager:
 
     def get_tasks_for_employee(self, employee_id: str, search: str = "", status: str = "", priority: str = "") -> list:
         tasks = self._load_tasks()
-        filtered = [t for t in tasks if t.get("employee_id") == employee_id]
+        norm_emp_id = str(employee_id).strip().upper()
+        norm_emp_num = norm_emp_id.replace("EMP-", "").lstrip("0")
+
+        filtered = []
+        for t in tasks:
+            t_emp_id = str(t.get("employee_id", "")).strip().upper()
+            t_emp_num = t_emp_id.replace("EMP-", "").lstrip("0")
+            if t_emp_id == norm_emp_id or (norm_emp_num and t_emp_num == norm_emp_num):
+                filtered.append(t)
 
         if search:
             q = search.strip().lower()
@@ -694,6 +702,9 @@ class TaskManager:
         completed = sum(1 for t in tasks if t.get("status") == "Completed")
         in_progress = sum(1 for t in tasks if t.get("status") == "In Progress")
         pending = sum(1 for t in tasks if t.get("status") == "Pending")
+        high_p = sum(1 for t in tasks if t.get("priority") == "High")
+        med_p = sum(1 for t in tasks if t.get("priority") == "Medium")
+        low_p = sum(1 for t in tasks if t.get("priority") == "Low")
         rate = round((completed / total * 100), 1) if total > 0 else 0
 
         my_tasks = [t for t in tasks if t.get("employee_id") == norm_mgr_id]
@@ -713,13 +724,22 @@ class TaskManager:
         urgent_tasks = [t for t in tasks if t.get("priority") == "High" and t.get("status") != "Completed"]
 
         return {
+            "total": total,
             "total_tasks": total,
+            "completed": completed,
             "completed_tasks": completed,
+            "in_progress": in_progress,
             "in_progress_tasks": in_progress,
+            "pending": pending,
             "pending_tasks": pending,
+            "high_priority": high_p,
+            "medium_priority": med_p,
+            "low_priority": low_p,
             "completion_rate": rate,
             "total_employees": len(employees),
             "tasks": tasks,
+            "all_tasks": tasks,
+            "recent_tasks": tasks[:6],
             "my_tasks": my_tasks,
             "team_tasks": team_tasks,
             "urgent_tasks": urgent_tasks,
@@ -732,6 +752,9 @@ class TaskManager:
         completed = sum(1 for t in tasks if t.get("status") == "Completed")
         in_progress = sum(1 for t in tasks if t.get("status") == "In Progress")
         pending = sum(1 for t in tasks if t.get("status") == "Pending")
+        high_p = sum(1 for t in tasks if t.get("priority") == "High")
+        med_p = sum(1 for t in tasks if t.get("priority") == "Medium")
+        low_p = sum(1 for t in tasks if t.get("priority") == "Low")
         rate = round((completed / total * 100), 1) if total > 0 else 0
 
         recent_activity = []
@@ -747,13 +770,22 @@ class TaskManager:
         urgent_tasks = [t for t in tasks if t.get("priority") == "High" and t.get("status") != "Completed"]
 
         return {
+            "total": total,
             "total_tasks": total,
+            "completed": completed,
             "completed_tasks": completed,
+            "in_progress": in_progress,
             "in_progress_tasks": in_progress,
+            "pending": pending,
             "pending_tasks": pending,
+            "high_priority": high_p,
+            "medium_priority": med_p,
+            "low_priority": low_p,
             "completion_rate": rate,
             "my_tasks": tasks,
             "tasks": tasks,
+            "all_tasks": tasks,
+            "recent_tasks": tasks[:6],
             "urgent_tasks": urgent_tasks,
             "recent_activity": recent_activity[:10],
         }

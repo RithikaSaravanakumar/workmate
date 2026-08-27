@@ -153,17 +153,17 @@ export default function DashboardPage({
     year: 'numeric',
   });
 
-  // Calculate Priority Counts
-  const allTasks = data?.all_tasks || data?.recent_tasks || [];
-  const highPriority = data?.high_priority || allTasks.filter((t) => t.priority === 'High').length || 3;
-  const mediumPriority = allTasks.filter((t) => t.priority === 'Medium').length || 2;
-  const lowPriority = allTasks.filter((t) => t.priority === 'Low').length || 1;
-  const totalTasks = data?.total || highPriority + mediumPriority + lowPriority || 6;
+  // Calculate Priority Counts directly from real backend data
+  const allTasks = data?.tasks || data?.all_tasks || data?.my_tasks || [];
+  const highPriority = data?.high_priority ?? allTasks.filter((t) => t.priority === 'High').length;
+  const mediumPriority = data?.medium_priority ?? allTasks.filter((t) => t.priority === 'Medium').length;
+  const lowPriority = data?.low_priority ?? allTasks.filter((t) => t.priority === 'Low').length;
+  const totalTasks = data?.total_tasks ?? data?.total ?? (highPriority + mediumPriority + lowPriority);
 
   // Donut chart calculations
-  const highPct = Math.round((highPriority / (totalTasks || 1)) * 100);
-  const medPct = Math.round((mediumPriority / (totalTasks || 1)) * 100);
-  const lowPct = Math.max(0, 100 - highPct - medPct);
+  const highPct = totalTasks > 0 ? Math.round((highPriority / totalTasks) * 100) : 0;
+  const medPct = totalTasks > 0 ? Math.round((mediumPriority / totalTasks) * 100) : 0;
+  const lowPct = totalTasks > 0 ? Math.max(0, 100 - highPct - medPct) : 0;
 
   // SVG Donut circumference = 2 * PI * 40 = 251.32
   const c = 251.32;
@@ -258,9 +258,9 @@ export default function DashboardPage({
               <TrendingUp size={12} /> {isManager ? '↑ 12% vs last week' : 'Active Tasks'}
             </span>
           </div>
-          <div className="stat-value">{data?.total || 0}</div>
+          <div className="stat-value">{data?.total_tasks ?? data?.total ?? 0}</div>
           <div className="stat-label">{isManager ? 'Total Team Tasks' : 'My Assigned Tasks'}</div>
-          <div className="stat-sub">{data?.completed || 0} Tasks fully completed</div>
+          <div className="stat-sub">{data?.completed_tasks ?? data?.completed ?? 0} Tasks fully completed</div>
         </div>
 
         {/* In Progress */}
@@ -274,7 +274,7 @@ export default function DashboardPage({
             </span>
           </div>
           <div className="stat-value" style={{ color: 'var(--sky)' }}>
-            {data?.in_progress || 0}
+            {data?.in_progress_tasks ?? data?.in_progress ?? 0}
           </div>
           <div className="stat-label">Tasks In Progress</div>
           <div className="stat-sub">{isManager ? 'Active workflow momentum' : 'Currently in development'}</div>
@@ -291,7 +291,7 @@ export default function DashboardPage({
             </span>
           </div>
           <div className="stat-value" style={{ color: 'var(--amber)' }}>
-            {data?.pending || 0}
+            {data?.pending_tasks ?? data?.pending ?? 0}
           </div>
           <div className="stat-label">Pending Kickoff</div>
           <div className="stat-sub">{isManager ? 'Awaiting team start' : 'Awaiting your kickoff'}</div>
@@ -304,11 +304,11 @@ export default function DashboardPage({
               <CheckCircle2 size={20} />
             </div>
             <span className="stat-trend trend-up">
-              <Check size={12} /> {(data?.total ? Math.round(((data.completed || 0) / data.total) * 100) : 0)}% Rate
+              <Check size={12} /> {data?.completion_rate ?? ((data?.total_tasks || data?.total) ? Math.round(((data?.completed_tasks ?? data?.completed ?? 0) / (data?.total_tasks || data?.total)) * 100) : 0)}% Rate
             </span>
           </div>
           <div className="stat-value" style={{ color: 'var(--emerald)' }}>
-            {data?.completed || 0}
+            {data?.completed_tasks ?? data?.completed ?? 0}
           </div>
           <div className="stat-label">Completed Tasks</div>
           <div className="stat-sub">Delivered &amp; verified</div>

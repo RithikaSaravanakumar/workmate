@@ -407,5 +407,75 @@
     ],
     "created_at": "2026-08-27 15:54:58",
     "updated_at": "2026-08-27 15:54:58"
+  },
+  {
+    "id": "TASK-TRISH-7642",
+    "manager_id": "MGR-001",
+    "assigned_by": "Manager",
+    "assigned_by_id": "MGR-001",
+    "assigned_by_role": "manager",
+    "title": "Build Real-Time Notification Stream",
+    "description": "Connect WebSocket and SSE backends for instant task and leave alerts.",
+    "employee_id": "EMP-728",
+    "employee": "thrisha",
+    "assignee_role": "employee",
+    "priority": "High",
+    "status": "Pending",
+    "due_date": "2026-09-20",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 16:17:22",
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Task created by Manager and assigned to thrisha."
+      }
+    ],
+    "created_at": "2026-08-27 16:17:22",
+    "updated_at": "2026-08-27 16:17:22"
+  },
+  {
+    "id": "TASK-TRISH-7711",
+    "manager_id": "MGR-001",
+    "assigned_by": "Manager",
+    "assigned_by_id": "MGR-001",
+    "assigned_by_role": "manager",
+    "title": "Build Real-Time Notification Stream",
+    "description": "Connect WebSocket and SSE backends for instant task and leave alerts.",
+    "employee_id": "EMP-728",
+    "employee": "thrisha",
+    "assignee_role": "employee",
+    "priority": "High",
+    "status": "Completed",
+    "due_date": "2026-09-20",
+    "activity_log": [
+      {
+        "timestamp": "2026-08-27 16:18:31",
+        "action": "Created",
+        "actor": "Manager",
+        "previous_status": "",
+        "new_status": "Pending",
+        "note": "Task created by Manager and assigned to thrisha."
+      },
+      {
+        "timestamp": "2026-08-27 16:18:31",
+        "action": "Status Updated",
+        "actor": "EMP-728",
+        "previous_status": "Pending",
+        "new_status": "In Progress",
+        "note": "Started working on architecture"
+      },
+      {
+        "timestamp": "2026-08-27 16:18:31",
+        "action": "Status Updated",
+        "actor": "EMP-728",
+        "previous_status": "In Progress",
+        "new_status": "Completed",
+        "note": "All test suites passing and merged"
+      }
+    ],
+    "created_at": "2026-08-27 16:18:31",
+    "updated_at": "2026-08-27 16:18:31"
   }
 ]
