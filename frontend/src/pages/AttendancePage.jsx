@@ -52,11 +52,8 @@ export default function AttendancePage({ user, showToast }) {
           api.getTodayAttendance(),
           api.getAttendanceHistory(),
         ]);
-        if (todayRes.ok && todayRes.data && todayRes.data.id) {
-          setTodayAttendance(todayRes.data);
-        } else {
-          setTodayAttendance(null);
-        }
+        const att = todayRes.ok ? (todayRes.data?.attendance !== undefined ? todayRes.data.attendance : (todayRes.data?.id ? todayRes.data : null)) : null;
+        setTodayAttendance(att);
         if (histRes.ok) {
           setHistory(histRes.data || []);
         }

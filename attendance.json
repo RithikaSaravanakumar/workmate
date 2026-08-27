@@ -135,15 +135,15 @@
     "department": "Engineering",
     "check_in": "1:31 PM",
     "check_in_iso": "2026-08-27T13:31:54.638067",
-    "check_out": null,
-    "check_out_iso": null,
-    "total_duration_minutes": 0,
-    "total_duration_formatted": "0h 00m",
+    "check_out": "2:11 PM",
+    "check_out_iso": "2026-08-27T14:11:26.798771",
+    "total_duration_minutes": 39,
+    "total_duration_formatted": "0h 39m",
     "target_hours": 8,
     "overtime_minutes": 0,
-    "overtime_formatted": "00h 00m",
-    "status": "Present",
+    "overtime_formatted": "0h 00m",
+    "status": "Short",
     "created_at": "2026-08-27 13:31:54",
-    "updated_at": "2026-08-27 13:31:54"
+    "updated_at": "2026-08-27 14:11:26"
   }
 ]

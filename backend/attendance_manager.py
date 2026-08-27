@@ -91,19 +91,24 @@ class AttendanceManager:
         today_str = now.strftime("%Y-%m-%d")
         clean_emp_id = employee_id.strip().upper()
 
-        # Find today's active attendance or latest open check-in
+        # Find today's active attendance or latest open check-in (newest first)
         target_idx = -1
-        for idx, r in enumerate(records):
-            if r.get("employee_id", "").upper() == clean_emp_id and (r.get("date") == today_str or not r.get("check_out")):
-                target_idx = idx
-                break
+        for idx in range(len(records) - 1, -1, -1):
+            r = records[idx]
+            if r.get("employee_id", "").upper() == clean_emp_id:
+                if not r.get("check_out"):
+                    target_idx = idx
+                    break
+                elif r.get("date") == today_str:
+                    target_idx = idx
+                    break
 
         if target_idx == -1:
             raise ValueError("No active check-in found for today. Please check in first.")
 
         record = records[target_idx]
         if record.get("check_out"):
-            raise ValueError("You have already checked out for today.")
+            raise ValueError(f"You have already checked out for today at {record.get('check_out')}.")
 
         check_in_iso = record.get("check_in_iso")
         if not check_in_iso:

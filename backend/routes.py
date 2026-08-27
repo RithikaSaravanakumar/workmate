@@ -655,20 +655,35 @@ def attendance_check_in():
     role = get_current_role()
     if role == "employee":
         emp_id = get_current_employee_id()
-        mgr_id = get_current_manager_id()
-        emp_name = session.get("employee_name", "Employee")
+        mgr_id = session.get("manager_id", "MGR-001")
+        name = session.get("employee_name") or session.get("name") or emp_id
         dept = session.get("employee_department", "General")
     elif role == "manager":
         emp_id = get_current_manager_id()
+        if emp_id == "003":
+            emp_id = "MGR-001"
         mgr_id = "CEO-001"
-        emp_name = session.get("full_name", "Manager")
+        name = session.get("full_name", "Manager")
         dept = session.get("department", "Management")
+    elif role == "admin":
+        emp_id = session.get("admin_id", "CEO-001")
+        mgr_id = "BOARD"
+        name = session.get("full_name", "CEO / Administrator")
+        dept = "Executive"
     else:
-        return jsonify({"error": "Admin cannot check in as employee."}), 400
+        return jsonify({"error": "Unauthorized"}), 401
 
     try:
-        record = attendance_manager.check_in(emp_id, mgr_id, emp_name, dept)
-        return jsonify({"message": f"Checked in successfully at {record.get('check_in')}.", "attendance": record}), 200
+        record = attendance_manager.check_in(
+            employee_id=emp_id,
+            manager_id=mgr_id,
+            employee_name=name,
+            department=dept
+        )
+        resp = dict(record)
+        resp["attendance"] = record
+        resp["message"] = f"Checked in successfully at {record.get('check_in')}!"
+        return jsonify(resp), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -681,15 +696,19 @@ def attendance_check_out():
         emp_id = get_current_employee_id()
     elif role == "manager":
         emp_id = get_current_manager_id()
+        if emp_id == "003":
+            emp_id = "MGR-001"
+    elif role == "admin":
+        emp_id = session.get("admin_id", "CEO-001")
     else:
-        return jsonify({"error": "Admin cannot check out as employee."}), 400
+        return jsonify({"error": "Unauthorized"}), 401
 
     try:
-        record = attendance_manager.check_out(emp_id)
-        return jsonify({
-            "message": f"Checked out successfully at {record.get('check_out')}. Duration: {record.get('total_duration_formatted')}.",
-            "attendance": record
-        }), 200
+        record = attendance_manager.check_out(employee_id=emp_id)
+        resp = dict(record)
+        resp["attendance"] = record
+        resp["message"] = f"Checked out successfully! Workday duration: {record.get('total_duration_formatted')}."
+        return jsonify(resp), 200
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
 
@@ -698,28 +717,53 @@ def attendance_check_out():
 @login_required
 def get_today_attendance():
     role = get_current_role()
-    emp_id = get_current_employee_id() if role == "employee" else get_current_manager_id()
+    if role == "employee":
+        emp_id = get_current_employee_id()
+    elif role == "manager":
+        emp_id = get_current_manager_id()
+        if emp_id == "003":
+            emp_id = "MGR-001"
+    elif role == "admin":
+        emp_id = session.get("admin_id", "CEO-001")
+    else:
+        return jsonify({"attendance": None}), 200
+
     record = attendance_manager.get_today_attendance_for_employee(emp_id)
-    return jsonify(record or {}), 200
+    if not record:
+        return jsonify({"attendance": None}), 200
+
+    resp = dict(record)
+    resp["attendance"] = record
+    return jsonify(resp), 200
 
 
 @bp.route("/api/attendance/history", methods=["GET"])
 @login_required
 def get_attendance_history():
     role = get_current_role()
-    emp_id = get_current_employee_id() if role == "employee" else get_current_manager_id()
-    records = attendance_manager.get_attendance_history_for_employee(emp_id)
-    return jsonify(records), 200
+    if role == "employee":
+        emp_id = get_current_employee_id()
+    elif role == "manager":
+        emp_id = get_current_manager_id()
+        if emp_id == "003":
+            emp_id = "MGR-001"
+    elif role == "admin":
+        emp_id = session.get("admin_id", "CEO-001")
+    else:
+        return jsonify([]), 200
+
+    history = attendance_manager.get_attendance_history_for_employee(emp_id)
+    return jsonify(history), 200
 
 
 @bp.route("/api/attendance/team", methods=["GET"])
 @manager_required
 def get_team_attendance():
     manager_id = get_current_manager_id()
-    date_filter = request.args.get("date", "").strip()
-    search = request.args.get("q", "").strip()
-    employees = get_employees_for_manager(manager_id)
+    date_filter = request.args.get("date", "")
+    search = request.args.get("q", "")
 
+    employees = get_employees_for_manager(manager_id)
     records = attendance_manager.get_attendance_for_manager(manager_id, date_filter, search)
     stats = attendance_manager.get_manager_attendance_stats(manager_id, employees)
 
@@ -730,14 +774,18 @@ def get_team_attendance():
 
 
 @bp.route("/api/attendance/organization", methods=["GET"])
-@admin_required
+@login_required
 def get_organization_attendance():
-    date_filter = request.args.get("date", "").strip()
-    search = request.args.get("q", "").strip()
-    all_emps = get_all_employees()
+    role = get_current_role()
+    if role != "admin":
+        return jsonify({"error": "Admin privileges required."}), 403
 
+    date_filter = request.args.get("date", "")
+    search = request.args.get("q", "")
+
+    all_employees = get_all_employees()
     records = attendance_manager.get_all_attendance_for_admin(date_filter, search)
-    stats = attendance_manager.get_admin_attendance_stats(all_emps)
+    stats = attendance_manager.get_admin_attendance_stats(all_employees)
 
     return jsonify({
         "records": records,
@@ -1061,3 +1109,5 @@ def get_calendar():
         "leaves": leaves,
         "tasks": tasks
     }), 200
+
+
