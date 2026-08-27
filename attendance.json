@@ -145,5 +145,26 @@
     "status": "Short",
     "created_at": "2026-08-27 13:31:54",
     "updated_at": "2026-08-27 14:11:26"
+  },
+  {
+    "id": "ATT-20260827-EMP-728",
+    "date": "2026-08-27",
+    "date_display": "Aug 27, 2026",
+    "employee_id": "EMP-728",
+    "employee_name": "thrisha",
+    "manager_id": "MGR-001",
+    "department": "Engineering",
+    "check_in": "3:29 PM",
+    "check_in_iso": "2026-08-27T15:29:41.730432",
+    "check_out": null,
+    "check_out_iso": null,
+    "total_duration_minutes": 0,
+    "total_duration_formatted": "0h 00m",
+    "target_hours": 8,
+    "overtime_minutes": 0,
+    "overtime_formatted": "00h 00m",
+    "status": "Present",
+    "created_at": "2026-08-27 15:29:41",
+    "updated_at": "2026-08-27 15:29:41"
   }
 ]
