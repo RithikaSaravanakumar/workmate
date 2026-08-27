@@ -939,13 +939,18 @@ def get_dashboard():
         employees = get_employees_for_manager(manager_id)
         stats = task_manager.get_dashboard_stats(manager_id, employees)
         leave_stats = leave_manager.get_manager_leave_stats(manager_id)
-        stats["leave_stats"] = leave_stats
-        stats["pending_leaves"] = leave_stats.get("pending", 0)
-        stats["approved_leaves"] = leave_stats.get("approved", 0)
-
         all_leaves = leave_manager.get_leaves_for_manager(manager_id)
-        stats["recent_leave_requests"] = [l for l in all_leaves if l.get("status") == "Pending"][:5]
-        stats["upcoming_approved_leaves"] = [l for l in all_leaves if l.get("status") == "Approved"][:5]
+
+        pending_list = [l for l in all_leaves if l.get("status") == "Pending"]
+        approved_list = [l for l in all_leaves if l.get("status") == "Approved"]
+
+        stats["leave_stats"] = leave_stats
+        stats["pending_leaves"] = len(pending_list)
+        stats["approved_leaves"] = len(approved_list)
+        stats["recent_leave_requests"] = all_leaves[:8]
+        stats["team_leave_requests"] = all_leaves[:8]
+        stats["pending_leave_requests"] = pending_list
+        stats["upcoming_approved_leaves"] = approved_list[:5]
 
         # Attendance summary for manager dashboard
         att_stats = attendance_manager.get_manager_attendance_stats(manager_id, employees)
@@ -956,11 +961,14 @@ def get_dashboard():
     elif role == "employee":
         emp_id = get_current_employee_id()
         stats = task_manager.get_employee_dashboard_stats(emp_id)
+        emp_leaves = leave_manager.get_leaves_for_employee(emp_id)
         leave_stats = leave_manager.get_employee_leave_stats(emp_id)
+
         stats["leave_stats"] = leave_stats
-        stats["pending_leaves"] = leave_stats.get("pending", 0)
-        stats["approved_leaves"] = leave_stats.get("approved", 0)
-        stats["recent_leave_requests"] = leave_stats.get("recent_requests", [])
+        stats["pending_leaves"] = sum(1 for l in emp_leaves if l.get("status") == "Pending")
+        stats["approved_leaves"] = sum(1 for l in emp_leaves if l.get("status") == "Approved")
+        stats["recent_leave_requests"] = emp_leaves[:8]
+        stats["my_leave_requests"] = emp_leaves[:8]
 
         # Attendance info for employee dashboard
         today_att = attendance_manager.get_today_attendance_for_employee(emp_id)

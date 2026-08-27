@@ -1095,15 +1095,160 @@ export default function DashboardPage({
         </div>
       </div>
 
-      {/* 7. Employee Leave Requests Panel */}
+      {/* 7A. Manager Team Leave Requests & Approvals Panel */}
+      {isManager && (
+        <div className="card" style={{ marginBottom: '28px' }}>
+          <div className="card-header">
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Palmtree size={18} color="var(--primary-yellow)" />
+                <h3 className="card-title" style={{ margin: 0 }}>Team Leave Requests &amp; Approvals</h3>
+                {data?.pending_leaves > 0 && (
+                  <span className="badge badge-pending" style={{ fontSize: '11px' }}>
+                    {data.pending_leaves} Pending Approval
+                  </span>
+                )}
+              </div>
+              <p className="card-subtext">Review time-off applications from your team members and manage department availability</p>
+            </div>
+          </div>
+
+          <div className="table-wrap">
+            <table className="custom-table">
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Team Member</th>
+                  <th>Category</th>
+                  <th>Dates &amp; Duration</th>
+                  <th>Status</th>
+                  <th>Reason</th>
+                  <th style={{ textAlign: 'right' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(data?.recent_leave_requests || data?.team_leave_requests || []).length === 0 ? (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
+                      No team leave requests submitted yet.
+                    </td>
+                  </tr>
+                ) : (
+                  (data?.recent_leave_requests || data?.team_leave_requests || []).map((l) => (
+                    <tr key={l.id}>
+                      <td>
+                        <span style={{ color: 'var(--primary-yellow)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
+                          {l.id}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="table-avatar-cell">
+                          <div
+                            className="table-avatar"
+                            style={{ background: 'linear-gradient(135deg, #FFE44D, #FFD21F)', color: '#0A0A0A' }}
+                          >
+                            {(l.employee_name || 'E')[0]}
+                          </div>
+                          <div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-100)' }}>{l.employee_name}</div>
+                            <div style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>
+                              {l.department || 'Team'} • {l.employee_id}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span
+                          className="badge"
+                          style={{
+                            background: 'var(--bg-surface)',
+                            border: '1px solid var(--border)',
+                            color: 'var(--text-200)',
+                          }}
+                        >
+                          {l.leave_type}
+                        </span>
+                      </td>
+                      <td>
+                        <div style={{ fontSize: '12.5px', color: 'var(--text-100)', fontWeight: 600 }}>
+                          {l.start_date} → {l.end_date}
+                        </div>
+                        <div style={{ fontSize: '11px', color: 'var(--primary-yellow)', fontWeight: 700 }}>
+                          {l.days_count} {l.days_count === 1 ? 'day' : 'days'}
+                        </div>
+                      </td>
+                      <td>
+                        <span
+                          className={`badge ${
+                            l.status === 'Approved'
+                              ? 'badge-completed'
+                              : l.status === 'Rejected'
+                              ? 'badge-priority-high'
+                              : 'badge-pending'
+                          }`}
+                        >
+                          {l.status}
+                        </span>
+                      </td>
+                      <td style={{ fontSize: '12.5px', color: 'var(--text-300)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        "{l.reason}"
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <div style={{ display: 'inline-flex', gap: '6px', alignItems: 'center' }}>
+                          {l.status === 'Pending' && (
+                            <>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                title="Approve Leave"
+                                onClick={() => handleApproveLeave(l.id)}
+                                style={{ padding: '5px 10px' }}
+                              >
+                                <Check size={13} /> Approve
+                              </button>
+                              <button
+                                className="btn btn-danger btn-sm"
+                                title="Reject Leave"
+                                onClick={() => onOpenRejectModal(l)}
+                                style={{ padding: '5px 10px' }}
+                              >
+                                <X size={13} /> Reject
+                              </button>
+                            </>
+                          )}
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            title="View Full Details"
+                            onClick={() => onOpenLeaveDetails(l)}
+                            style={{ padding: '5px 8px' }}
+                          >
+                            <Eye size={13} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* 7B. Employee Personal Leave Requests Panel */}
       {isEmployee && (
         <div className="card" style={{ marginBottom: '28px' }}>
           <div className="card-header">
             <div>
-              <h3 className="card-title">
-                <Palmtree size={18} color="var(--primary-yellow)" /> My Leave Requests &amp; Approvals
-              </h3>
-              <p className="card-subtext">Recent time-off applications, manager feedback, and status decisions</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Palmtree size={18} color="var(--primary-yellow)" />
+                <h3 className="card-title" style={{ margin: 0 }}>My Leave Requests &amp; Approvals</h3>
+                {data?.pending_leaves > 0 && (
+                  <span className="badge badge-pending" style={{ fontSize: '11px' }}>
+                    {data.pending_leaves} Pending Review
+                  </span>
+                )}
+              </div>
+              <p className="card-subtext">Your personal time-off applications, manager feedback, and approval status</p>
             </div>
           </div>
 
@@ -1118,17 +1263,18 @@ export default function DashboardPage({
                   <th>Status</th>
                   <th>Reason</th>
                   <th>Manager Comment / Decision</th>
+                  <th style={{ textAlign: 'right' }}>Details</th>
                 </tr>
               </thead>
               <tbody>
-                {(data?.recent_leave_requests || []).length === 0 ? (
+                {(data?.recent_leave_requests || data?.my_leave_requests || []).length === 0 ? (
                   <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
-                      No leave requests submitted yet.
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '32px', color: 'var(--text-muted)' }}>
+                      No leave requests submitted yet. Click "+ Apply for Time Off" above to apply.
                     </td>
                   </tr>
                 ) : (
-                  (data?.recent_leave_requests || []).map((l) => (
+                  (data?.recent_leave_requests || data?.my_leave_requests || []).map((l) => (
                     <tr key={l.id}>
                       <td>
                         <span style={{ color: 'var(--primary-yellow)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
@@ -1168,11 +1314,21 @@ export default function DashboardPage({
                           {l.status}
                         </span>
                       </td>
-                      <td style={{ fontSize: '12.5px', color: 'var(--text-300)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <td style={{ fontSize: '12.5px', color: 'var(--text-300)', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         "{l.reason}"
                       </td>
                       <td style={{ fontSize: '12.5px', color: l.status === 'Rejected' ? 'var(--coral)' : 'var(--text-200)' }}>
                         {l.manager_comment || (l.status === 'Pending' ? '⏳ Under review by manager' : '—')}
+                      </td>
+                      <td style={{ textAlign: 'right' }}>
+                        <button
+                          className="btn btn-secondary btn-sm"
+                          title="View Leave Details"
+                          onClick={() => onOpenLeaveDetails(l)}
+                          style={{ padding: '5px 8px' }}
+                        >
+                          <Eye size={13} />
+                        </button>
                       </td>
                     </tr>
                   ))

@@ -437,5 +437,23 @@
     "is_manager_leave": true,
     "created_at": "2026-08-27 15:54:58",
     "updated_at": "2026-08-27 15:54:58"
+  },
+  {
+    "id": "LEV-121",
+    "manager_id": "MGR-001",
+    "employee_id": "EMP-001",
+    "employee_name": "Manager",
+    "department": "Management",
+    "leave_type": "Casual",
+    "start_date": "2027-06-13",
+    "end_date": "2027-06-15",
+    "days_count": 3,
+    "reason": "Family trip for verification test #572",
+    "status": "Approved",
+    "rejection_reason": "",
+    "manager_comment": "Approved by Alex on Dashboard",
+    "is_manager_leave": false,
+    "created_at": "2026-08-27 16:32:12",
+    "updated_at": "2026-08-27 16:32:13"
   }
 ]
