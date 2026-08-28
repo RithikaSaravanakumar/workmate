@@ -20,6 +20,7 @@ import { api } from '../services/api';
 export default function LeavesPage({
   user,
   searchQuery,
+  refreshTrigger,
   onOpenLeaveModal,
   onOpenLeaveDetails,
   onOpenRejectModal,
@@ -66,7 +67,7 @@ export default function LeavesPage({
 
   useEffect(() => {
     loadLeaves();
-  }, [user, searchQuery, typeFilter, statusFilter]);
+  }, [user, searchQuery, typeFilter, statusFilter, refreshTrigger]);
 
   const handleApprove = async (id) => {
     try {

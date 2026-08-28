@@ -21,6 +21,7 @@ import { api } from '../services/api';
 
 export default function CeoDashboardPage({
   user,
+  refreshTrigger,
   onNavigate,
   onOpenLeaveDetails,
   showToast,
@@ -47,7 +48,7 @@ export default function CeoDashboardPage({
 
   useEffect(() => {
     loadCeoDashboard();
-  }, []);
+  }, [refreshTrigger]);
 
   const handleApproveLeave = async (leaveId) => {
     setActionLoading(true);

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart3, TrendingUp, Users, Palmtree, CheckCircle2, Download, Printer, Award, Sparkles, Building } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function ReportsPage({ user, showToast }) {
+export default function ReportsPage({ user, refreshTrigger, showToast }) {
   const [reports, setReports] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -27,7 +27,7 @@ export default function ReportsPage({ user, showToast }) {
 
   useEffect(() => {
     loadReports();
-  }, [user]);
+  }, [user, refreshTrigger]);
 
   const handlePrint = () => {
     window.print();

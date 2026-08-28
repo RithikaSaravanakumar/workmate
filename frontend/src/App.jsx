@@ -409,6 +409,7 @@ export default function App() {
             role === 'admin' ? (
               <CeoDashboardPage
                 user={user}
+                refreshTrigger={refreshTrigger}
                 onNavigate={navigateTo}
                 onOpenLeaveDetails={(leave) => setLeaveDetailsModal({ isOpen: true, leave })}
                 showToast={showToast}
@@ -416,6 +417,7 @@ export default function App() {
             ) : (
               <DashboardPage
                 user={user}
+                refreshTrigger={refreshTrigger}
                 onOpenTaskModal={() => setTaskModal({ isOpen: true, mode: 'add', initialData: null })}
                 onOpenLeaveModal={() => setLeaveModal({ isOpen: true })}
                 onOpenActivityModal={(task) => setTaskActivityModal({ isOpen: true, task })}
@@ -432,6 +434,7 @@ export default function App() {
           {activePage === 'tasks' && role !== 'admin' && (
             <TasksPage
               user={user}
+              refreshTrigger={refreshTrigger}
               searchQuery={searchQuery}
               onOpenTaskModal={() => setTaskModal({ isOpen: true, mode: 'add', initialData: null })}
               onOpenEditTaskModal={(task) => setTaskModal({ isOpen: true, mode: 'edit', initialData: task })}
@@ -443,13 +446,14 @@ export default function App() {
 
           {/* Managers Route (CEO/Admin Only) */}
           {activePage === 'managers' && role === 'admin' && (
-            <CeoManagersPage showToast={showToast} />
+            <CeoManagersPage refreshTrigger={refreshTrigger} showToast={showToast} />
           )}
 
           {/* Employees Route */}
           {activePage === 'employees' && (role === 'manager' || role === 'admin') && (
             <EmployeesPage
               user={user}
+              refreshTrigger={refreshTrigger}
               onOpenEmployeeModal={() => setEmployeeModal({ isOpen: true, mode: 'add', initialData: null })}
               onOpenEditEmployeeModal={(emp) => setEmployeeModal({ isOpen: true, mode: 'edit', initialData: emp })}
               onDeleteEmployee={handleDeleteEmployee}
@@ -462,6 +466,7 @@ export default function App() {
           {activePage === 'leaves' && role !== 'admin' && (
             <LeavesPage
               user={user}
+              refreshTrigger={refreshTrigger}
               searchQuery={searchQuery}
               onOpenLeaveModal={() => setLeaveModal({ isOpen: true })}
               onOpenLeaveDetails={(leave) => setLeaveDetailsModal({ isOpen: true, leave })}
@@ -473,13 +478,14 @@ export default function App() {
 
           {/* Attendance Route (All Roles) */}
           {activePage === 'attendance' && (
-            <AttendancePage user={user} showToast={showToast} />
+            <AttendancePage user={user} refreshTrigger={refreshTrigger} showToast={showToast} />
           )}
 
           {/* Calendar Route */}
           {activePage === 'calendar' && role !== 'admin' && (
             <CalendarPage
               user={user}
+              refreshTrigger={refreshTrigger}
               onOpenLeaveModal={() => setLeaveModal({ isOpen: true })}
               showToast={showToast}
             />
@@ -487,7 +493,7 @@ export default function App() {
 
           {/* Reports Route */}
           {activePage === 'reports' && (role === 'manager' || role === 'admin') && (
-            <ReportsPage user={user} showToast={showToast} />
+            <ReportsPage user={user} refreshTrigger={refreshTrigger} showToast={showToast} />
           )}
 
           {/* Profile Route */}
@@ -503,6 +509,7 @@ export default function App() {
           {activePage === 'admin-leaves' && role === 'admin' && (
             <AdminLeavesPage
               user={user}
+              refreshTrigger={refreshTrigger}
               onOpenLeaveDetails={(leave) => setLeaveDetailsModal({ isOpen: true, leave })}
               showToast={showToast}
             />

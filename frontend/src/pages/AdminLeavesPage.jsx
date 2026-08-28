@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ShieldCheck, Check, X, Eye, Palmtree, User, CheckCircle2, XCircle } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function AdminLeavesPage({ user, onOpenLeaveDetails, showToast }) {
+export default function AdminLeavesPage({ user, refreshTrigger, onOpenLeaveDetails, showToast }) {
   const [leaves, setLeaves] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +24,7 @@ export default function AdminLeavesPage({ user, onOpenLeaveDetails, showToast })
 
   useEffect(() => {
     loadLeaves();
-  }, []);
+  }, [refreshTrigger]);
 
   const handleApprove = async (id) => {
     try {

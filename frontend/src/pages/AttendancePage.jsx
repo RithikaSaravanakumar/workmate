@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function AttendancePage({ user, showToast }) {
+export default function AttendancePage({ user, refreshTrigger, showToast }) {
   const role = user?.role || 'employee';
   const isEmployee = role === 'employee';
   const isManager = role === 'manager';
@@ -80,7 +80,7 @@ export default function AttendancePage({ user, showToast }) {
 
   useEffect(() => {
     loadData();
-  }, [user, role, dateFilter]);
+  }, [user, role, dateFilter, refreshTrigger]);
 
   // Live timer computation
   useEffect(() => {

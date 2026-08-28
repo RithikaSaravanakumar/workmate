@@ -12,7 +12,7 @@ import {
 } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function CeoManagersPage({ showToast }) {
+export default function CeoManagersPage({ refreshTrigger, showToast }) {
   const [managers, setManagers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,7 +35,7 @@ export default function CeoManagersPage({ showToast }) {
 
   useEffect(() => {
     loadManagers();
-  }, []);
+  }, [refreshTrigger]);
 
   const filteredManagers = managers.filter((m) => {
     const q = searchQuery.toLowerCase().trim();

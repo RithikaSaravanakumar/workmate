@@ -31,6 +31,7 @@ import { api } from '../services/api';
 
 export default function DashboardPage({
   user,
+  refreshTrigger,
   onOpenTaskModal,
   onOpenLeaveModal,
   onOpenActivityModal,
@@ -77,7 +78,7 @@ export default function DashboardPage({
 
   useEffect(() => {
     loadDashboard();
-  }, [user]);
+  }, [user, refreshTrigger]);
 
   const handleQuickStatusUpdate = async (taskId, newStatus) => {
     try {

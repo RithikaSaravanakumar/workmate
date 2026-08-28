@@ -25,6 +25,7 @@ import { api } from '../services/api';
 
 export default function EmployeesPage({
   user,
+  refreshTrigger,
   onOpenEmployeeModal,
   onOpenEditEmployeeModal,
   onDeleteEmployee,
@@ -67,7 +68,7 @@ export default function EmployeesPage({
 
   useEffect(() => {
     loadEmployees();
-  }, [user]);
+  }, [user, refreshTrigger]);
 
   // Derived filter options
   const departments = ['all', ...new Set(employees.map((e) => e.department).filter(Boolean))];

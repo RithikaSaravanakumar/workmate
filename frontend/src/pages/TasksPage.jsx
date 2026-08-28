@@ -26,6 +26,7 @@ import { api } from '../services/api';
 
 export default function TasksPage({
   user,
+  refreshTrigger,
   searchQuery,
   onOpenTaskModal,
   onOpenEditTaskModal,
@@ -88,11 +89,11 @@ export default function TasksPage({
 
   useEffect(() => {
     loadTasks();
-  }, [user, searchQuery, statusFilter, priorityFilter, empFilter, activeTab]);
+  }, [user, searchQuery, statusFilter, priorityFilter, empFilter, activeTab, refreshTrigger]);
 
   useEffect(() => {
     loadEmployees();
-  }, [user]);
+  }, [user, refreshTrigger]);
 
   const handleStatusTransition = async (taskId, newStatus) => {
     try {

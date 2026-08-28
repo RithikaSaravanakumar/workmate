@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, Palmtree, CheckSquare, Clock, User, Sparkles } from 'lucide-react';
 import { api } from '../services/api';
 
-export default function CalendarPage({ user, onOpenLeaveModal, showToast }) {
+export default function CalendarPage({ user, refreshTrigger, onOpenLeaveModal, showToast }) {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [calendarData, setCalendarData] = useState({ leaves: [], tasks: [] });
   const [selectedDay, setSelectedDay] = useState(new Date().getDate());
@@ -34,7 +34,7 @@ export default function CalendarPage({ user, onOpenLeaveModal, showToast }) {
 
   useEffect(() => {
     loadCalendar();
-  }, [user]);
+  }, [user, refreshTrigger]);
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
