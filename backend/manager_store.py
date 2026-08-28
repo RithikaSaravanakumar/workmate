@@ -8,6 +8,7 @@ import os
 import json
 import re
 from datetime import datetime
+from backend.time_utils import format_datetime_ist, format_date_ist, now_ist
 from backend.auth import hash_password, verify_password
 
 
@@ -87,7 +88,7 @@ def create_manager(data: dict) -> dict:
         "department": department,
         "avatar": avatar,
         "password_hash": hash_password(password),
-        "created_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "created_at": format_datetime_ist(),
     }
 
     managers.append(new_manager)

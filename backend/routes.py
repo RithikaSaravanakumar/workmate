@@ -10,6 +10,7 @@ Implements endpoints for:
 
 from flask import Blueprint, jsonify, request, session
 from datetime import datetime
+from backend.time_utils import now_ist, format_date_ist, format_time_ist, format_datetime_ist
 from backend.auth import (
     set_session, clear_session, is_authenticated,
     login_required, manager_required, employee_required, admin_required,
@@ -410,7 +411,7 @@ def get_employees():
     today_records = attendance_manager.get_attendance_for_manager(manager_id)
     today_map = {r.get("employee_id"): r for r in today_records}
     approved_leaves = leave_manager.get_leaves_for_manager(manager_id, status="Approved")
-    today_str = datetime.now().strftime("%Y-%m-%d")
+    today_str = format_date_ist()
 
     for emp in employees:
         emp_tasks = [t for t in tasks if t.get("employee_id") == emp["employee_id"]]
@@ -896,7 +897,7 @@ def get_admin_employees():
 
     today_records = attendance_manager.get_all_attendance_for_admin()
     today_map = {r.get("employee_id"): r for r in today_records}
-    today_str = datetime.now().strftime("%Y-%m-%d")
+    today_str = format_date_ist()
 
     all_leaves = leave_manager.get_all_leaves()
     approved_leaves = [l for l in all_leaves if l.get("status") == "Approved" and not l.get("is_manager_leave")]

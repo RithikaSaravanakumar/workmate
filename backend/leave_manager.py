@@ -9,6 +9,7 @@ import os
 import json
 import re
 from datetime import datetime, date
+from backend.time_utils import format_datetime_ist, format_date_ist, now_ist
 
 
 LEAVES_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leaves.json")
@@ -182,7 +183,7 @@ class LeaveManager:
         next_num = max(nums, default=100) + 1
         leave_id = f"LEV-{next_num}"
 
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = format_datetime_ist()
 
         new_leave = {
             "id": leave_id,
@@ -225,7 +226,7 @@ class LeaveManager:
         leave["status"] = "Approved"
         leave["manager_comment"] = comment.strip() or "Approved by manager."
         leave["rejection_reason"] = ""
-        leave["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        leave["updated_at"] = format_datetime_ist()
 
         leaves[target_idx] = leave
         self._save_leaves(leaves)
@@ -252,7 +253,7 @@ class LeaveManager:
         leave["status"] = "Rejected"
         leave["rejection_reason"] = rejection_reason.strip()
         leave["manager_comment"] = f"Rejected: {rejection_reason.strip()}"
-        leave["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        leave["updated_at"] = format_datetime_ist()
 
         leaves[target_idx] = leave
         self._save_leaves(leaves)
@@ -274,7 +275,7 @@ class LeaveManager:
         leave["status"] = "Approved"
         leave["manager_comment"] = comment.strip() or "Approved by CEO/Admin."
         leave["rejection_reason"] = ""
-        leave["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        leave["updated_at"] = format_datetime_ist()
 
         leaves[target_idx] = leave
         self._save_leaves(leaves)
@@ -299,7 +300,7 @@ class LeaveManager:
         leave["status"] = "Rejected"
         leave["rejection_reason"] = reason.strip()
         leave["manager_comment"] = f"Rejected by CEO/Admin: {reason.strip()}"
-        leave["updated_at"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        leave["updated_at"] = format_datetime_ist()
 
         leaves[target_idx] = leave
         self._save_leaves(leaves)

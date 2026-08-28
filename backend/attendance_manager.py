@@ -2,19 +2,26 @@
 backend/attendance_manager.py — WorkMate Attendance & 8-Hour Workday Management
 Handles check-in, check-out, duration calculations, 8-hour target progress,
 overtime calculation, and scoped attendance reporting for Employee, Manager, and CEO/Admin.
+All operations run in Indian Standard Time (IST, UTC+5:30).
 Stores records in attendance.json.
 """
 
 import os
 import json
 from datetime import datetime, date, timedelta
-
+from backend.storage_utils import read_json_file, write_json_file
+from backend.time_utils import (
+    now_ist,
+    format_time_ist,
+    format_datetime_ist,
+    format_date_ist,
+    format_date_display_ist,
+    parse_to_ist,
+    IST,
+)
 
 ATTENDANCE_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "attendance.json")
 TARGET_WORKDAY_MINUTES = 480  # 8 hours
-
-
-from backend.storage_utils import read_json_file, write_json_file
 
 
 class AttendanceManager:
@@ -29,7 +36,7 @@ class AttendanceManager:
 
     @staticmethod
     def _format_time(dt: datetime) -> str:
-        return dt.strftime("%I:%M %p").lstrip("0")
+        return format_time_ist(dt)
 
     @staticmethod
     def _format_duration(minutes: int) -> str:
@@ -39,8 +46,8 @@ class AttendanceManager:
 
     def check_in(self, employee_id: str, manager_id: str, employee_name: str, department: str = "General", check_in_dt: datetime = None) -> dict:
         records = self._load_attendance()
-        now = check_in_dt or datetime.now()
-        today_str = now.strftime("%Y-%m-%d")
+        now = parse_to_ist(check_in_dt) if check_in_dt else now_ist()
+        today_str = format_date_ist(now)
         clean_emp_id = employee_id.strip().upper()
 
         # Check if already checked in today
@@ -57,7 +64,7 @@ class AttendanceManager:
         new_record = {
             "id": record_id,
             "date": today_str,
-            "date_display": now.strftime("%b %d, %Y"),
+            "date_display": format_date_display_ist(now),
             "employee_id": clean_emp_id,
             "employee_name": employee_name.strip(),
             "manager_id": manager_id,
@@ -72,8 +79,8 @@ class AttendanceManager:
             "overtime_minutes": 0,
             "overtime_formatted": "00h 00m",
             "status": "Present",
-            "created_at": now.strftime("%Y-%m-%d %H:%M:%S"),
-            "updated_at": now.strftime("%Y-%m-%d %H:%M:%S"),
+            "created_at": format_datetime_ist(now),
+            "updated_at": format_datetime_ist(now),
         }
 
         records.append(new_record)
@@ -82,8 +89,8 @@ class AttendanceManager:
 
     def check_out(self, employee_id: str, check_out_dt: datetime = None) -> dict:
         records = self._load_attendance()
-        now = check_out_dt or datetime.now()
-        today_str = now.strftime("%Y-%m-%d")
+        now = parse_to_ist(check_out_dt) if check_out_dt else now_ist()
+        today_str = format_date_ist(now)
         clean_emp_id = employee_id.strip().upper()
 
         # Find today's active attendance or latest open check-in (newest first)
@@ -110,7 +117,7 @@ class AttendanceManager:
             raise ValueError("Corrupted attendance record: missing check-in timestamp.")
 
         try:
-            in_dt = datetime.fromisoformat(check_in_iso)
+            in_dt = parse_to_ist(check_in_iso)
         except Exception:
             in_dt = now
 
@@ -134,7 +141,7 @@ class AttendanceManager:
         record["overtime_minutes"] = overtime_min
         record["overtime_formatted"] = overtime_formatted
         record["status"] = status
-        record["updated_at"] = now.strftime("%Y-%m-%d %H:%M:%S")
+        record["updated_at"] = format_datetime_ist(now)
 
         records[target_idx] = record
         self._save_attendance(records)
@@ -142,7 +149,7 @@ class AttendanceManager:
 
     def get_today_attendance_for_employee(self, employee_id: str) -> dict | None:
         records = self._load_attendance()
-        today_str = datetime.now().strftime("%Y-%m-%d")
+        today_str = format_date_ist()
         clean_emp_id = employee_id.strip().upper()
 
         for r in reversed(records):
@@ -199,7 +206,7 @@ class AttendanceManager:
 
     def get_manager_attendance_stats(self, manager_id: str, employees: list) -> dict:
         records = self._load_attendance()
-        today_str = datetime.now().strftime("%Y-%m-%d")
+        today_str = format_date_ist()
         total_team = len(employees)
 
         team_emp_ids = {e["employee_id"].upper() for e in employees}
@@ -218,8 +225,8 @@ class AttendanceManager:
         for r in today_team_records:
             if not r.get("check_out") and r.get("check_in_iso"):
                 try:
-                    in_dt = datetime.fromisoformat(r["check_in_iso"])
-                    elapsed = max(0, int((datetime.now() - in_dt).total_seconds() / 60))
+                    in_dt = parse_to_ist(r["check_in_iso"])
+                    elapsed = max(0, int((now_ist() - in_dt).total_seconds() / 60))
                     total_minutes += elapsed
                 except Exception:
                     pass
@@ -246,7 +253,7 @@ class AttendanceManager:
 
     def get_admin_attendance_stats(self, all_employees: list) -> dict:
         records = self._load_attendance()
-        today_str = datetime.now().strftime("%Y-%m-%d")
+        today_str = format_date_ist()
         total_workforce = len(all_employees)
 
         today_records = [r for r in records if r.get("date") == today_str]
@@ -256,6 +263,16 @@ class AttendanceManager:
         not_checked_in = max(0, total_workforce - present_count)
 
         total_minutes = sum(r.get("total_duration_minutes", 0) for r in today_records)
+        # For active checked in users, include elapsed minutes so far today
+        for r in today_records:
+            if not r.get("check_out") and r.get("check_in_iso"):
+                try:
+                    in_dt = parse_to_ist(r["check_in_iso"])
+                    elapsed = max(0, int((now_ist() - in_dt).total_seconds() / 60))
+                    total_minutes += elapsed
+                except Exception:
+                    pass
+
         avg_hours_float = round((total_minutes / present_count / 60), 1) if present_count > 0 else 0.0
         completed_8h = sum(1 for r in today_records if r.get("total_duration_minutes", 0) >= TARGET_WORKDAY_MINUTES)
         overtime_count = sum(1 for r in today_records if r.get("overtime_minutes", 0) > 0)
@@ -277,7 +294,7 @@ class AttendanceManager:
         if records:
             return
 
-        today = date.today()
+        today = now_ist().date()
         sample_records = [
             # EMP-001 Sarah Jenkins
             {
@@ -289,9 +306,9 @@ class AttendanceManager:
                 "manager_id": manager_id,
                 "department": "Engineering",
                 "check_in": "9:15 AM",
-                "check_in_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T09:15:00",
+                "check_in_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T09:15:00+05:30",
                 "check_out": "5:15 PM",
-                "check_out_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T17:15:00",
+                "check_out_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T17:15:00+05:30",
                 "total_duration_minutes": 480,
                 "total_duration_formatted": "8h 00m",
                 "target_hours": 8,
@@ -310,9 +327,9 @@ class AttendanceManager:
                 "manager_id": manager_id,
                 "department": "Engineering",
                 "check_in": "9:05 AM",
-                "check_in_iso": f"{(today - timedelta(days=2)).strftime('%Y-%m-%d')}T09:05:00",
+                "check_in_iso": f"{(today - timedelta(days=2)).strftime('%Y-%m-%d')}T09:05:00+05:30",
                 "check_out": "4:45 PM",
-                "check_out_iso": f"{(today - timedelta(days=2)).strftime('%Y-%m-%d')}T16:45:00",
+                "check_out_iso": f"{(today - timedelta(days=2)).strftime('%Y-%m-%d')}T16:45:00+05:30",
                 "total_duration_minutes": 460,
                 "total_duration_formatted": "7h 40m",
                 "target_hours": 8,
@@ -331,9 +348,9 @@ class AttendanceManager:
                 "manager_id": manager_id,
                 "department": "Engineering",
                 "check_in": "9:20 AM",
-                "check_in_iso": f"{(today - timedelta(days=3)).strftime('%Y-%m-%d')}T09:20:00",
+                "check_in_iso": f"{(today - timedelta(days=3)).strftime('%Y-%m-%d')}T09:20:00+05:30",
                 "check_out": "6:10 PM",
-                "check_out_iso": f"{(today - timedelta(days=3)).strftime('%Y-%m-%d')}T18:10:00",
+                "check_out_iso": f"{(today - timedelta(days=3)).strftime('%Y-%m-%d')}T18:10:00+05:30",
                 "total_duration_minutes": 530,
                 "total_duration_formatted": "8h 50m",
                 "target_hours": 8,
@@ -353,9 +370,9 @@ class AttendanceManager:
                 "manager_id": manager_id,
                 "department": "Backend",
                 "check_in": "8:55 AM",
-                "check_in_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T08:55:00",
+                "check_in_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T08:55:00+05:30",
                 "check_out": "5:30 PM",
-                "check_out_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T17:30:00",
+                "check_out_iso": f"{(today - timedelta(days=1)).strftime('%Y-%m-%d')}T17:30:00+05:30",
                 "total_duration_minutes": 515,
                 "total_duration_formatted": "8h 35m",
                 "target_hours": 8,

@@ -9,6 +9,7 @@ import os
 import json
 import re
 from datetime import datetime
+from backend.time_utils import format_datetime_ist, format_date_ist, now_ist
 
 
 TASKS_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tasks.json")
@@ -151,7 +152,7 @@ class TaskManager:
             if t.get("id", "").upper() == task_id:
                 raise ValueError(f"Task ID '{task_id}' already exists.")
 
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = format_datetime_ist()
         due_date = str(data.get("due_date", "")).strip()
 
         initial_log = [{
@@ -220,7 +221,7 @@ class TaskManager:
             if t.get("id", "").upper() == task_id:
                 raise ValueError(f"Task ID '{task_id}' already exists.")
 
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = format_datetime_ist()
         due_date = str(data.get("due_date", "")).strip()
 
         initial_log = [{
@@ -270,7 +271,7 @@ class TaskManager:
             raise ValueError(f"Task '{task_id}' not found.")
 
         task = tasks[target_idx]
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = format_datetime_ist()
 
         if "title" in updates:
             title = str(updates["title"]).strip()
@@ -340,7 +341,7 @@ class TaskManager:
             raise ValueError(f"Status must be one of: {', '.join(VALID_STATUSES)}.")
 
         old_status = task.get("status", "Pending")
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = format_datetime_ist()
 
         action_name = "Status Updated"
         if old_status == "Completed" and new_status in ["In Progress", "Pending"]:
@@ -490,7 +491,7 @@ class TaskManager:
         tasks = self._load_tasks()
         has_employee_tasks = any(t.get("manager_id") == manager_id and t.get("employee_id") != manager_id for t in tasks)
         has_manager_tasks = any(t.get("employee_id") == manager_id for t in tasks)
-        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = format_datetime_ist()
 
         if not has_employee_tasks:
             demo_emp_tasks = [
