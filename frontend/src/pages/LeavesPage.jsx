@@ -232,8 +232,11 @@ export default function LeavesPage({
               <option value="">All Types</option>
               <option value="Casual">Casual</option>
               <option value="Sick">Sick</option>
+              <option value="Earned">Earned</option>
+              <option value="Vacation">Vacation</option>
               <option value="Annual">Annual</option>
               <option value="Emergency">Emergency</option>
+              <option value="Other">Other</option>
             </select>
           </div>
         </div>

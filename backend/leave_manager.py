@@ -14,7 +14,19 @@ from backend.time_utils import format_datetime_ist, format_date_ist, now_ist, ma
 
 LEAVES_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leaves.json")
 
-VALID_LEAVE_TYPES = ["Casual", "Sick", "Earned", "Vacation", "Other"]
+VALID_LEAVE_TYPES = [
+    "Casual",
+    "Sick",
+    "Earned",
+    "Vacation",
+    "Annual",
+    "Emergency",
+    "Maternity",
+    "Paternity",
+    "Bereavement",
+    "Compensatory",
+    "Other",
+]
 VALID_LEAVE_STATUSES = ["Pending", "Approved", "Rejected"]
 
 
@@ -64,13 +76,17 @@ class LeaveManager:
         leaves = self._load_leaves()
         norm_mgr_id = str(manager_id).strip().upper()
         mgr_ids = [norm_mgr_id]
-        if norm_mgr_id in ["MGR-001", "003"]:
-            mgr_ids = ["MGR-001", "003"]
+        if norm_mgr_id in ["MGR-001", "003", "005"]:
+            mgr_ids = ["MGR-001", "003", "005"]
 
         filtered = [
             l for l in leaves
-            if (str(l.get("manager_id", "")).strip().upper() in mgr_ids or not l.get("manager_id"))
-            and not l.get("is_manager_leave")
+            if not l.get("is_manager_leave")
+            and (
+                str(l.get("manager_id", "")).strip().upper() in mgr_ids
+                or not l.get("manager_id")
+                or not manager_id
+            )
         ]
 
         if search:
@@ -90,7 +106,7 @@ class LeaveManager:
         if employee_id:
             filtered = [l for l in filtered if matches_emp_id(l.get("employee_id"), employee_id)]
 
-        return sorted(filtered, key=lambda x: x.get("start_date", ""), reverse=True)
+        return sorted(filtered, key=lambda x: (x.get("start_date", ""), x.get("created_at", "")), reverse=True)
 
     def get_leaves_for_employee(self, employee_id: str, search: str = "", leave_type: str = "", status: str = "") -> list:
         leaves = self._load_leaves()
@@ -206,11 +222,19 @@ class LeaveManager:
 
     def approve_leave(self, manager_id: str, leave_id: str, comment: str = "") -> dict:
         leaves = self._load_leaves()
+        norm_leave_id = leave_id.strip().upper()
+        norm_mgr_id = str(manager_id).strip().upper()
+        mgr_ids = [norm_mgr_id]
+        if norm_mgr_id in ["MGR-001", "003", "005"]:
+            mgr_ids = ["MGR-001", "003", "005"]
+
         target_idx = -1
         for idx, l in enumerate(leaves):
-            if l.get("manager_id") == manager_id and l.get("id", "").upper() == leave_id.strip().upper():
-                target_idx = idx
-                break
+            if l.get("id", "").upper() == norm_leave_id:
+                l_mgr_id = str(l.get("manager_id", "")).strip().upper()
+                if not manager_id or l_mgr_id in mgr_ids or not l_mgr_id:
+                    target_idx = idx
+                    break
 
         if target_idx == -1:
             raise ValueError(f"Leave request '{leave_id}' not found.")
@@ -233,11 +257,19 @@ class LeaveManager:
             raise ValueError("Rejection reason is required (at least 3 characters).")
 
         leaves = self._load_leaves()
+        norm_leave_id = leave_id.strip().upper()
+        norm_mgr_id = str(manager_id).strip().upper()
+        mgr_ids = [norm_mgr_id]
+        if norm_mgr_id in ["MGR-001", "003", "005"]:
+            mgr_ids = ["MGR-001", "003", "005"]
+
         target_idx = -1
         for idx, l in enumerate(leaves):
-            if l.get("manager_id") == manager_id and l.get("id", "").upper() == leave_id.strip().upper():
-                target_idx = idx
-                break
+            if l.get("id", "").upper() == norm_leave_id:
+                l_mgr_id = str(l.get("manager_id", "")).strip().upper()
+                if not manager_id or l_mgr_id in mgr_ids or not l_mgr_id:
+                    target_idx = idx
+                    break
 
         if target_idx == -1:
             raise ValueError(f"Leave request '{leave_id}' not found.")
