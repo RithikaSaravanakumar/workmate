@@ -76,9 +76,41 @@ export default function DashboardPage({
     }
   };
 
+  const [attElapsedMinutes, setAttElapsedMinutes] = useState(0);
+
   useEffect(() => {
     loadDashboard();
   }, [user, refreshTrigger]);
+
+  useEffect(() => {
+    const todayAtt = data?.today_attendance;
+    if (!todayAtt || !todayAtt.check_in_iso) {
+      setAttElapsedMinutes(0);
+      return;
+    }
+    if (todayAtt.check_out_iso) {
+      setAttElapsedMinutes(todayAtt.total_duration_minutes || 0);
+      return;
+    }
+    const updateElapsed = () => {
+      try {
+        const inTime = new Date(todayAtt.check_in_iso).getTime();
+        const diffMin = Math.max(0, Math.floor((Date.now() - inTime) / (1000 * 60)));
+        setAttElapsedMinutes(diffMin);
+      } catch (e) {
+        setAttElapsedMinutes(0);
+      }
+    };
+    updateElapsed();
+    const timer = setInterval(updateElapsed, 10000);
+    return () => clearInterval(timer);
+  }, [data?.today_attendance]);
+
+  const formatAttDuration = (mins) => {
+    const h = Math.floor(mins / 60);
+    const m = mins % 60;
+    return `${h}h ${String(m).padStart(2, '0')}m`;
+  };
 
   const handleQuickStatusUpdate = async (taskId, newStatus) => {
     try {
@@ -412,7 +444,14 @@ export default function DashboardPage({
                   Check Out: <strong style={{ color: 'var(--emerald)', fontFamily: 'var(--font-mono)' }}>{data?.today_attendance?.check_out || '— : —'}</strong>
                 </span>
                 <span>
-                  Duration: <strong style={{ color: 'var(--text-100)', fontFamily: 'var(--font-mono)' }}>{data?.today_attendance?.total_duration_formatted || '0h 00m'}</strong>
+                  Duration:{' '}
+                  <strong style={{ color: 'var(--text-100)', fontFamily: 'var(--font-mono)' }}>
+                    {data?.today_attendance?.check_out
+                      ? data?.today_attendance?.total_duration_formatted || '0h 00m'
+                      : data?.today_attendance?.check_in
+                      ? `${formatAttDuration(attElapsedMinutes)} (Active)`
+                      : '0h 00m'}
+                  </strong>
                 </span>
               </div>
             </div>

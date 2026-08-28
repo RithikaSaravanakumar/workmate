@@ -17,6 +17,7 @@ from backend.time_utils import (
     format_date_ist,
     format_date_display_ist,
     parse_to_ist,
+    matches_emp_id,
     IST,
 )
 
@@ -52,7 +53,7 @@ class AttendanceManager:
 
         # Check if already checked in today
         existing = next(
-            (r for r in records if r.get("employee_id", "").upper() == clean_emp_id and r.get("date") == today_str),
+            (r for r in records if matches_emp_id(r.get("employee_id"), clean_emp_id) and r.get("date") == today_str),
             None
         )
         if existing:
@@ -97,7 +98,7 @@ class AttendanceManager:
         target_idx = -1
         for idx in range(len(records) - 1, -1, -1):
             r = records[idx]
-            if r.get("employee_id", "").upper() == clean_emp_id:
+            if matches_emp_id(r.get("employee_id"), clean_emp_id):
                 if not r.get("check_out"):
                     target_idx = idx
                     break
@@ -150,17 +151,15 @@ class AttendanceManager:
     def get_today_attendance_for_employee(self, employee_id: str) -> dict | None:
         records = self._load_attendance()
         today_str = format_date_ist()
-        clean_emp_id = employee_id.strip().upper()
 
         for r in reversed(records):
-            if r.get("employee_id", "").upper() == clean_emp_id and (r.get("date") == today_str or (not r.get("check_out") and r.get("status") == "Present")):
+            if matches_emp_id(r.get("employee_id"), employee_id) and (r.get("date") == today_str or (not r.get("check_out") and r.get("status") == "Present")):
                 return r
         return None
 
     def get_attendance_history_for_employee(self, employee_id: str, limit: int = 50) -> list:
         records = self._load_attendance()
-        clean_emp_id = employee_id.strip().upper()
-        emp_records = [r for r in records if r.get("employee_id", "").upper() == clean_emp_id]
+        emp_records = [r for r in records if matches_emp_id(r.get("employee_id"), employee_id)]
         emp_records.sort(key=lambda x: (x.get("date", ""), x.get("created_at", "")), reverse=True)
         return emp_records[:limit]
 
@@ -209,10 +208,9 @@ class AttendanceManager:
         today_str = format_date_ist()
         total_team = len(employees)
 
-        team_emp_ids = {e["employee_id"].upper() for e in employees}
         today_team_records = [
             r for r in records
-            if r.get("date") == today_str and r.get("employee_id", "").upper() in team_emp_ids
+            if r.get("date") == today_str and any(matches_emp_id(r.get("employee_id"), e.get("employee_id")) for e in employees)
         ]
 
         checked_in = sum(1 for r in today_team_records if r.get("status") == "Present" and not r.get("check_out"))

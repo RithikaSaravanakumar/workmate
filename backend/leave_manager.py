@@ -9,7 +9,7 @@ import os
 import json
 import re
 from datetime import datetime, date
-from backend.time_utils import format_datetime_ist, format_date_ist, now_ist
+from backend.time_utils import format_datetime_ist, format_date_ist, now_ist, matches_emp_id
 
 
 LEAVES_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "leaves.json")
@@ -49,7 +49,7 @@ class LeaveManager:
         for l in leaves:
             if exclude_id and l.get("id", "").upper() == exclude_id.upper():
                 continue
-            if l.get("employee_id", "").upper() == employee_id.upper():
+            if matches_emp_id(l.get("employee_id"), employee_id):
                 if l.get("status") in ["Approved", "Pending"]:
                     try:
                         ex_start = self._parse_date(l["start_date"])
@@ -88,23 +88,19 @@ class LeaveManager:
         if status and status in VALID_LEAVE_STATUSES:
             filtered = [l for l in filtered if l.get("status") == status]
         if employee_id:
-            emp_norm = str(employee_id).strip().upper()
-            filtered = [l for l in filtered if str(l.get("employee_id", "")).strip().upper() == emp_norm]
+            filtered = [l for l in filtered if matches_emp_id(l.get("employee_id"), employee_id)]
 
         return sorted(filtered, key=lambda x: x.get("start_date", ""), reverse=True)
 
     def get_leaves_for_employee(self, employee_id: str, search: str = "", leave_type: str = "", status: str = "") -> list:
         leaves = self._load_leaves()
-        norm_emp_id = str(employee_id).strip().upper()
-        norm_emp_num = norm_emp_id.replace("EMP-", "").lstrip("0")
 
         filtered = []
         for l in leaves:
             if l.get("is_manager_leave"):
                 continue
-            l_emp_id = str(l.get("employee_id", "")).strip().upper()
-            l_emp_num = l_emp_id.replace("EMP-", "").lstrip("0")
-            if l_emp_id == norm_emp_id or (norm_emp_num and l_emp_num == norm_emp_num):
+            l_emp_id = l.get("employee_id", "")
+            if matches_emp_id(l_emp_id, employee_id):
                 filtered.append(l)
 
         if search:
@@ -308,16 +304,24 @@ class LeaveManager:
 
     def delete_leave(self, manager_id: str, leave_id: str, is_employee: bool = False, employee_id: str = "") -> dict:
         leaves = self._load_leaves()
+        norm_leave_id = leave_id.strip().upper()
+        norm_mgr_id = str(manager_id).strip().upper()
+        mgr_ids = [norm_mgr_id]
+        if norm_mgr_id in ["MGR-001", "003"]:
+            mgr_ids = ["MGR-001", "003"]
+
         target_idx = -1
         for idx, l in enumerate(leaves):
-            if l.get("id", "").upper() == leave_id.strip().upper():
+            if l.get("id", "").upper() == norm_leave_id:
                 if is_employee:
-                    if l.get("employee_id") == employee_id:
+                    if matches_emp_id(l.get("employee_id"), employee_id):
                         target_idx = idx
                         break
-                elif l.get("manager_id") == manager_id:
-                    target_idx = idx
-                    break
+                else:
+                    l_mgr_id = str(l.get("manager_id", "")).strip().upper()
+                    if not manager_id or l_mgr_id in mgr_ids or not l_mgr_id:
+                        target_idx = idx
+                        break
 
         if target_idx == -1:
             raise ValueError(f"Leave record '{leave_id}' not found.")

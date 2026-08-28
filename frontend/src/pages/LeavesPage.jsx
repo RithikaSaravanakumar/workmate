@@ -85,7 +85,7 @@ export default function LeavesPage({
 
   const displayedLeaves = isManager
     ? (activeTab === 'my-leaves' ? managerOwnLeaves : leaves)
-    : leaves.filter((l) => !l.is_manager_leave && (l.employee_id === user?.employee_id || l.employee_name === (user?.full_name || user?.name)));
+    : leaves;
 
   return (
     <div>

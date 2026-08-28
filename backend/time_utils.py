@@ -75,3 +75,25 @@ def parse_to_ist(dt_or_str) -> datetime:
         except Exception:
             return now_ist()
     return now_ist()
+
+
+def normalize_emp_id(emp_id: str) -> str:
+    """Extracts base alphanumeric identifier without EMP prefix or leading zeros."""
+    if not emp_id:
+        return ""
+    s = str(emp_id).strip().upper().replace("EMP-", "").replace("EMP", "")
+    return s.lstrip("0") or "0"
+
+
+def matches_emp_id(id1: str, id2: str) -> bool:
+    """Compares two employee IDs flexibly (e.g. EMP-001 vs EMP001 vs 1)."""
+    if not id1 or not id2:
+        return False
+    s1 = str(id1).strip().upper()
+    s2 = str(id2).strip().upper()
+    if s1 == s2 or s1.replace("-", "") == s2.replace("-", ""):
+        return True
+    n1 = normalize_emp_id(s1)
+    n2 = normalize_emp_id(s2)
+    return bool(n1 and n2 and n1 == n2)
+

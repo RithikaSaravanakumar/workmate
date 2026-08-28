@@ -166,5 +166,26 @@
     "status": "Present",
     "created_at": "2026-08-27 15:29:41",
     "updated_at": "2026-08-27 15:29:41"
+  },
+  {
+    "id": "ATT-20260828-EMP-001",
+    "date": "2026-08-28",
+    "date_display": "Aug 28, 2026",
+    "employee_id": "EMP-001",
+    "employee_name": "Sarah Jenkins",
+    "manager_id": "MGR-001",
+    "department": "Engineering",
+    "check_in": "9:56 AM",
+    "check_in_iso": "2026-08-28T09:56:17.058727+05:30",
+    "check_out": null,
+    "check_out_iso": null,
+    "total_duration_minutes": 0,
+    "total_duration_formatted": "0h 00m",
+    "target_hours": 8,
+    "overtime_minutes": 0,
+    "overtime_formatted": "00h 00m",
+    "status": "Present",
+    "created_at": "2026-08-28 09:56:17",
+    "updated_at": "2026-08-28 09:56:17"
   }
 ]

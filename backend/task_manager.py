@@ -9,7 +9,7 @@ import os
 import json
 import re
 from datetime import datetime
-from backend.time_utils import format_datetime_ist, format_date_ist, now_ist
+from backend.time_utils import format_datetime_ist, format_date_ist, now_ist, matches_emp_id
 
 
 TASKS_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tasks.json")
@@ -59,20 +59,17 @@ class TaskManager:
         if priority and priority in VALID_PRIORITIES:
             filtered = [t for t in filtered if t.get("priority") == priority]
         if employee_id:
-            filtered = [t for t in filtered if t.get("employee_id") == employee_id]
+            filtered = [t for t in filtered if matches_emp_id(t.get("employee_id"), employee_id)]
 
         return filtered
 
     def get_tasks_for_employee(self, employee_id: str, search: str = "", status: str = "", priority: str = "") -> list:
         tasks = self._load_tasks()
-        norm_emp_id = str(employee_id).strip().upper()
-        norm_emp_num = norm_emp_id.replace("EMP-", "").lstrip("0")
 
         filtered = []
         for t in tasks:
-            t_emp_id = str(t.get("employee_id", "")).strip().upper()
-            t_emp_num = t_emp_id.replace("EMP-", "").lstrip("0")
-            if t_emp_id == norm_emp_id or (norm_emp_num and t_emp_num == norm_emp_num):
+            t_emp_id = t.get("employee_id", "")
+            if matches_emp_id(t_emp_id, employee_id):
                 filtered.append(t)
 
         if search:
@@ -144,7 +141,7 @@ class TaskManager:
         if status not in VALID_STATUSES:
             raise ValueError(f"Status must be one of: {', '.join(VALID_STATUSES)}.")
 
-        emp = next((e for e in employees if e["employee_id"] == emp_id), None)
+        emp = next((e for e in employees if matches_emp_id(e.get("employee_id"), emp_id)), None)
         if not emp:
             raise ValueError(f"Employee '{emp_id}' is not in your team roster.")
 
@@ -389,7 +386,7 @@ class TaskManager:
 
         emp_workload = []
         for emp in employees:
-            emp_tasks = [t for t in tasks if t.get("employee_id") == emp["employee_id"]]
+            emp_tasks = [t for t in tasks if matches_emp_id(t.get("employee_id"), emp.get("employee_id"))]
             emp_workload.append({
                 "employee_id": emp["employee_id"],
                 "name": emp["name"],
